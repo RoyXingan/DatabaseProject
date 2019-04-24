@@ -89,7 +89,7 @@ class TopicName(models.Model):
 # TopicSet model
 class TopicSet(models.Model):
     topic_set_id = models.AutoField(primary_key=True)
-    course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
+    assign_course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE)
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
 
@@ -160,6 +160,7 @@ class Goal(models.Model):
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
+    grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'goal'
