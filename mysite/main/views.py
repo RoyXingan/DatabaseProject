@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from .models import Curriculum
 from . import forms
 
@@ -17,18 +17,31 @@ def curriculum(request):
         form = forms.CurriculumForm(request.POST)
         if form.is_valid():
             form.clean()
-            print('Curriculum Name = ' + form['curriculum_name'].value())
-            print('Admin Name = ' + form['admin_name'].value())
-            print('Admin ID = ' + form['admin_id'].value())
-            print('Min Credits = ' + form['min_credits'].value())
-            print('Topic Coverage = ' + form['topic_coverage'].value())
-            print('Goal Valid Credits = ' + form['goal_valid_credits'].value())
-            if form['goal_valid'].value():
+            tempC = Curriculum()
+            tempC.curriculum_name = form['curriculum_name'].value()
+            tempC.admin_name = form['admin_name'].value()
+            tempC.admin_id = form['admin_id'].value()
+            tempC.min_credits  = form['min_credits'].value()
+            tempC.topic_coverage = form['topic_coverage'].value()
+            tempC.goal_valid_credits = form['goal_valid_credits'].value()
+            tempC.goal_valid = form['goal_valid'].value()
+
+            print('Curriculum Name = ' + tempC.curriculum_name)
+            print('Admin Name = ' + tempC.admin_name)
+            print('Admin ID = ' + tempC.admin_id)
+            print('Min Credits = ' + tempC.min_credits)
+            print('Topic Coverage = ' + tempC.topic_coverage)
+            print('Goal Valid Credits = ' + tempC.goal_valid_credits)
+
+            if tempC.goal_valid:
                 print('Goat Valid = true')
             else:
                 print('Goat Valid = true')
-            print('FORM PASSED')
-            pass
+            print('FORM VALUES READ IN')
+
+            tempC.save()
+
+            return HttpResponseRedirect('/')
     else:
         form = forms.CurriculumForm()
 
