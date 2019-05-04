@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Curriculum{% endblock %}
+
+{% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+
+{% if curriculum_list %}
+    <ul>
+    {% for curriculum in curriculum_list %}
+        <li><a href="#">{{ curriculum.curriculum_name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No curriculum are available.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+<!--    <div class="form-group">-->
+<!--        <label for="curriculumName">Curriculum Name</label>-->
+<!--        <input type="text" class="form-control" id="curriculumName" aria-describedby="nameHelp"-->
+<!--               placeholder="Example: Computer Science">-->
+<!--        <small id="nameHelp" class="form-text text-muted">Enter curriculum name</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="adminName">Admin Name</label>-->
+<!--        <input type="text" class="form-control" id="adminName" aria-describedby="adminNameHelp"-->
+<!--               placeholder="Example: Doe John">-->
+<!--        <small id="adminNameHelp" class="form-text text-muted">Enter admin name for the curriculum</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="adminID">Admin ID</label>-->
+<!--        <input type="text" class="form-control" id="adminID" aria-describedby="adminIDHelp"-->
+<!--               placeholder="Example: 12345678">-->
+<!--        <small id="adminIDHelp" class="form-text text-muted">Enter admin ID for the curriculum</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="minCredit">Minimum Credits</label>-->
+<!--        <input type="number" class="form-control" id="minCredit" aria-describedby="minCreditHelp"-->
+<!--               placeholder="Example: 123">-->
+<!--        <small id="minCreditHelp" class="form-text text-muted">Enter minimum credits for the curriculum</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="topicCoverage">Topic coverage</label>-->
+<!--        <select id="topicCoverage" class="form-control">-->
+<!--            <option selected>Extensive</option>-->
+<!--            <option>Inclusive</option>-->
+<!--            <option>BasicPlus</option>-->
+<!--            <option>Basic</option>-->
+<!--            <option>Unsatisfactory</option>-->
+<!--            <option>Substandard</option>-->
+<!--        </select>-->
+<!--        <small id="topicCoverageHelp" class="form-text text-muted">Select curriculum topic coverage</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group">-->
+<!--        <label for="goalValidCredit">Goal Valid Credits</label>-->
+<!--        <input type="number" class="form-control" id="goalValidCredit" aria-describedby="goalValidCreditHelp"-->
+<!--               placeholder="Example: 123">-->
+<!--        <small id="goalValidCreditHelp" class="form-text text-muted">Enter goal valid credits for the curriculum</small>-->
+<!--    </div>-->
+
+<!--    <div class="form-group form-check">-->
+<!--        <input class="form-check-input" type="checkbox" id="goalValid">-->
+<!--        <label class="form-check-label" for="goalValid">~ Goal Valid</label>-->
+<!--    </div>-->
+
+<!--    <button type="submit" class="btn btn-primary">Submit</button>-->
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</head>
+{% endblock %}
