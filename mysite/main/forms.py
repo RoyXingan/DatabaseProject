@@ -2,28 +2,29 @@ from django import forms
 
 
 class CurriculumForm(forms.Form):
-    curriculum_name = forms.CharField(
-
+    Extensive = 'EX'
+    Inclusive = 'IN'
+    BasicPlus = 'BP'
+    Basic = 'BC'
+    Unsatisfactory = 'US'
+    Substandard = 'SB'
+    TOPIC_COVERAGE = (
+        (Extensive, 'Extensive'),
+        (Inclusive, 'Inclusive'),
+        (BasicPlus, 'BasicPlus'),
+        (Basic, 'Basic'),
+        (Unsatisfactory, 'Unsatisfactory'),
+        (Substandard, 'Substandard'),
     )
-    admin_name = forms.CharField(
-
+    curriculum_name = forms.CharField(max_length=50)
+    admin_name = forms.CharField(max_length=100)
+    admin_id = forms.IntegerField()
+    min_credits = forms.IntegerField()
+    topic_coverage = forms.ChoiceField(
+        choices=TOPIC_COVERAGE,
     )
-    admin_id = forms.IntegerField(
-
-    )
-    min_credits = forms.IntegerField(
-
-    )
-    topic_coverage = forms.CharField(
-
-    )
-    goal_valid_credits = forms.IntegerField(
-
-    )
-    goal_valid = forms.BooleanField(
-
-    )
-
+    goal_valid_credits = forms.IntegerField()
+    goal_valid = forms.BooleanField()
 
     def clean(self):
         cleaned_data = super(CurriculumForm, self).clean()
