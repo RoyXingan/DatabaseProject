@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Curriculum
+from .models import Curriculum, Course
 from . import forms
 
 
@@ -49,3 +49,27 @@ def curriculum(request):
                   template_name="main/curriculum.html",
                   context={"curriculum_list": curriculum_list,
                            "form": form})
+
+
+def course(request):
+    course_list = Course.objects.order_by('course_name')
+
+    if request.method == 'POST':
+        if 'create_course' in request.POST:
+            post = Course()
+            post.course_name = request.POST.get('courseName')
+            post.subject_code = request.POST.get('subjectCode')
+            post.course_number = request.POST.get('courseNumber')
+            post.credits = request.POST.get('credits')
+            post.description = request.POST.get('description')
+            post.save()
+
+        print('Course Name = ' + post.course_name)
+        print('Subject Code = ' + post.subject_code)
+        print('Course Number = ' + post.course_number)
+        print('Credits = ' + post.credits)
+        print('Description = ' + post.description)
+
+    return render(request=request,
+                  template_name="main/course.html",
+                  context={"course_list": course_list})

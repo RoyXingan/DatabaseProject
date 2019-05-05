@@ -16,7 +16,7 @@ class CurriculumForm(forms.Form):
         (Unsatisfactory, 'Unsatisfactory'),
         (Substandard, 'Substandard'),
     )
-    curriculum_name = forms.CharField(max_length=50)
+    curriculum_name = forms.CharField(max_length=50, help_text="Enter Curriculum name")
     admin_name = forms.CharField(max_length=100)
     admin_id = forms.IntegerField()
     min_credits = forms.IntegerField()
@@ -34,6 +34,7 @@ class CurriculumForm(forms.Form):
         min_credits = cleaned_data.get('min_credits')
         topic_coverage = cleaned_data.get('topic_coverage')
         goal_valid_credits = cleaned_data.get('goal_valid_credits')
-        goal_valid = cleaned_data.get('goal_valid')
-        if not curriculum_name and not admin_name and not admin_id and not min_credits and not topic_coverage and not goal_valid_credits and not goal_valid:
+        # goal_valid = cleaned_data.get('goal_valid')
+        if not curriculum_name and not admin_name and not admin_id and not min_credits \
+                and not topic_coverage and not goal_valid_credits:
             raise forms.ValidationError('You have to write something!')
