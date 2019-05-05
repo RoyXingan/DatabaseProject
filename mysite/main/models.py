@@ -3,12 +3,12 @@ from django.db import models
 
 # curriculum model
 class Curriculum(models.Model):
-    Extensive = 'EX'
-    Inclusive = 'IN'
-    BasicPlus = 'BP'
-    Basic = 'BC'
-    Unsatisfactory = 'US'
-    Substandard = 'SB'
+    Extensive = 'Extensive'
+    Inclusive = 'Inclusive'
+    BasicPlus = 'BasicPlus'
+    Basic = 'Basic'
+    Unsatisfactory = 'Unsatisfactory'
+    Substandard = 'Substandard'
     TOPIC_COVERAGE = (
         (Extensive, 'Extensive'),
         (Inclusive, 'Inclusive'),
@@ -22,7 +22,7 @@ class Curriculum(models.Model):
     admin_id = models.PositiveIntegerField(default=0)
     min_credits = models.PositiveSmallIntegerField(default=0)
     topic_coverage = models.CharField(
-        max_length=2,
+        max_length=15,
         choices=TOPIC_COVERAGE,
         default=Basic,
     )

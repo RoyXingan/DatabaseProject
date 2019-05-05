@@ -1,54 +1,47 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Curriculum, Course
-from . import forms
 
 
 # Create your views here.
 def homepage(request):
     return render(request=request,
-                  template_name="main/home.html",
-                  context={"models": Curriculum.objects.all})
+                  template_name="main/home.html")
 
 
 def curriculum(request):
     curriculum_list = Curriculum.objects.order_by('curriculum_name')
+
     if request.method == 'POST':
-        form = forms.CurriculumForm(request.POST)
-        if form.is_valid():
-            form.clean()
-            tempC = Curriculum()
-            tempC.curriculum_name = form['curriculum_name'].value()
-            tempC.admin_name = form['admin_name'].value()
-            tempC.admin_id = form['admin_id'].value()
-            tempC.min_credits  = form['min_credits'].value()
-            tempC.topic_coverage = form['topic_coverage'].value()
-            tempC.goal_valid_credits = form['goal_valid_credits'].value()
-            tempC.goal_valid = form['goal_valid'].value()
-
-            print('Curriculum Name = ' + tempC.curriculum_name)
-            print('Admin Name = ' + tempC.admin_name)
-            print('Admin ID = ' + tempC.admin_id)
-            print('Min Credits = ' + tempC.min_credits)
-            print('Topic Coverage = ' + tempC.topic_coverage)
-            print('Goal Valid Credits = ' + tempC.goal_valid_credits)
-
-            if tempC.goal_valid:
-                print('Goat Valid = true')
+        if 'create_curriculum' in request.POST:
+            post = Curriculum()
+            post.curriculum_name = request.POST.get('curriculumName')
+            post.admin_name = request.POST.get('adminName')
+            post.admin_id = request.POST.get('adminID')
+            post.min_credits = request.POST.get('minCredit')
+            post.topic_coverage = request.POST.get('topicCoverage')
+            post.goal_valid_credits = request.POST.get('goalValidCredit')
+            if request.POST.get('goalValid') == 'on':
+                post.goal_valid = True
             else:
-                print('Goat Valid = true')
-            print('FORM VALUES READ IN')
+                post.goal_valid = False
+            post.save()
 
-            tempC.save()
-
-            return HttpResponseRedirect('/')
-    else:
-        form = forms.CurriculumForm()
+        print('curriculum_name = ' + post.curriculum_name)
+        print('admin_name = ' + post.admin_name)
+        print('admin_id = ' + post.admin_id)
+        print('min_credits = ' + post.min_credits)
+        print('topic_coverage = ' + post.topic_coverage)
+        print('goal_valid_credits = ' + post.goal_valid_credits)
+        if post.goal_valid:
+            print('goal_valid')
+        else:
+            print('not goal_valid')
+        return HttpResponseRedirect('/')
 
     return render(request=request,
                   template_name="main/curriculum.html",
-                  context={"curriculum_list": curriculum_list,
-                           "form": form})
+                  context={"curriculum_list": curriculum_list})
 
 
 def course(request):
@@ -69,6 +62,7 @@ def course(request):
         print('Course Number = ' + post.course_number)
         print('Credits = ' + post.credits)
         print('Description = ' + post.description)
+        return HttpResponseRedirect('/')
 
     return render(request=request,
                   template_name="main/course.html",
