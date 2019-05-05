@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Topic{% endblock %}
+
+{% block content %}
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <style>
+            .fakeimg {
+                background-color: #aaa;
+                width: 100%;
+                padding: 20px;
+            }
+
+            /* Create three equal columns that floats next to each other */
+            .column {
+                float: left;
+                width: 33.33%;
+                padding: 15px;
+            }
+
+            /* Clear floats after the columns */
+            .row:after {
+                content: "";
+                display: table;
+                clear: both;
+            }
+
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+
+            /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+            @media screen and (max-width: 600px) {
+                .column {
+                    width: 100%;
+                }
+            }
+        </style>
+    <body>
+
+    {% if topic_list %}
+        <ul>
+            {% for topic in topic_list %}
+                <li><a href="#">{{ topic.topic_id }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No topics are available.</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="topicName">Topic Name</label>
+            <input type="text" class="form-control" id="topicName" name="topicName" aria-describedby="nameHelp"
+                   placeholder="Example: Database" required>
+            <small id="nameHelp" class="form-text text-muted">Enter topic name</small>
+        </div>
+
+        <div class="form-group">
+            <label for="level">Level</label>
+            <select id="level" name="level" class="form-control">
+                <option selected>Level 1</option>
+                <option>Level 2</option>
+                <option>Level 3</option>
+            </select>
+            <small id="topicLevelHelp" class="form-text text-muted">Choose a level</small>
+        </div>
+
+{#        {% if curriculum_list %}#}
+{#            <ul>#}
+{#                {% for curriculum in curriculum_list %}#}
+{#                    <li><a href="#">{{ curriculum.curriculum_name }}</a></li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        {% else %}#}
+{#            <p>No curriculum are available.</p>#}
+{#        {% endif %}#}
+        <div class="form-group">
+            <label for="curriculum_name">Curriculum Name</label>
+            <select id="curriculum_name" name="curriculum_name" class="form-control">
+                {% if curriculum_list %}
+                    <ul>
+                        {% for curriculum in curriculum_list %}
+                            <option>{{ curriculum.curriculum_name }}</option>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <option>No curriculum are available.</option>
+                {% endif %}
+            </select>
+            <small id="topicCurriculumHelp" class="form-text text-muted">Choose a curriculum name</small>
+        </div>
+
+        <div class="form-group">
+            <label for="subjectArea">Subject Area</label>
+            <input type="text" class="form-control" id="subjectArea" name="subjectArea" aria-describedby="subjectAreaHelp"
+                   placeholder="Example: Learned ER models" required>
+            <small id="subjectAreaHelp" class="form-text text-muted">Enter topic subject area</small>
+        </div>
+
+        <div class="form-group">
+            <label for="units">Topic Units</label>
+            <input type="number" step="0.1" class="form-control" id="units" name="units"
+                   min=0 aria-describedby="unitsHelp" placeholder="Example: 10.5" required>
+            <small id="unitsHelp" class="form-text text-muted">Enter topic units</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary" name="create_topic">Submit</button>
+
+    </form>
+    </body>
+    </head>
+{% endblock %}
