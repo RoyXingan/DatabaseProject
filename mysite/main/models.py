@@ -59,6 +59,7 @@ class Topic(models.Model):
         (3, 'Level 3'),
     )
     topic_id = models.AutoField(primary_key=True)
+    topic_name = models.CharField(max_length=50)
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     level = models.PositiveSmallIntegerField(choices=LEVELS)
     subject_area = models.CharField(max_length=50)
@@ -71,19 +72,7 @@ class Topic(models.Model):
         ]
 
     def __str__(self):
-        return 'Topic ' + str(self.subject_area) + ' related to ' + str(self.curriculum_name)
-
-
-# TopicName model
-class TopicName(models.Model):
-    topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    topic_name = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = 'topic_name'
-
-    def __str__(self):
-        return '(' + str(self.topic_id) + '), name ' + str(self.topic_name)
+        return 'Topic ' + str(self.topic_name) + ' related to ' + str(self.curriculum_name)
 
 
 # TopicSet model

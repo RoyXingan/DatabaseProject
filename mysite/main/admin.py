@@ -17,7 +17,6 @@ from .models import *
 admin.site.register(Curriculum)
 admin.site.register(Course)
 admin.site.register(Topic)
-admin.site.register(TopicName)
 admin.site.register(TopicSet)
 admin.site.register(CurriculumCourse)
 admin.site.register(Section)
