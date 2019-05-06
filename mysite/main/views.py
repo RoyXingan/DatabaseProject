@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Curriculum, Course, Topic
+from .models import Curriculum, Course, Topic, TopicSet
 
 
 # Create your views here.
@@ -106,3 +106,32 @@ def topic(request):
                   template_name="main/topic.html",
                   context={"topic_list": topic_list,
                            "curriculum_list": curriculum_list})
+
+
+def topic_set(request):
+    course_list = Course.objects.order_by('course_name')
+    topic_list = Topic.objects.order_by('topic_id')
+    topic_set_list = TopicSet.objects.order_by('topic_set_id')
+
+    if request.method == 'POST':
+        if 'create_topic_set' in request.POST:
+            post = TopicSet()
+            if not request.POST.get('editTopicSet') == -1:
+                topic_sets = request.POST.get('editTopicSet').split(",")
+                post.topic_set_id = topic_sets[0]
+                print('Topic set ID = ' + post.topic_set_id)
+
+            course_name = request.POST.get('topicSetCourse').split(",")
+            post.assign_course_name = course_name[1]
+            print('Topic Course = ' + post.assign_course_name)
+            topic = request.POST.get('topicSetTopic').split(",")
+            post.topic_id = topic[0]
+            print('Topic ID = ' + post.topic_id)
+            post.curriculum_name = topic[1]
+            print('Curriculum Name = ' + post.curriculum_name)
+
+    return render(request=request,
+                  template_name="main/topic_set.html",
+                  context={"topic_list": topic_list,
+                           "course_list": course_list,
+                           "topic_set_list": topic_set_list})

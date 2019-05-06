@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Topic Set{% endblock %}
+
+{% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+
+{% if topic_set_list %}
+<ul>
+    {% for topic_set in topic_set_list %}
+    <li><a href="#">Topic Set [ID, course, topic]: {{topic_set.topic_set_id}}&nbsp;
+        {{topic_set.assign_course_name}},&nbsp;{{topic_set.topic_id}}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No topic set are available.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="editTopicSet">Option</label>
+        <select id="editTopicSet" name="editTopicSet" class="form-control">
+            <option value="-1" selected>Add A Topic Set</option>
+            {% if topic_set_list %}
+            {% for topic_set in topic_set_list %}
+            <option>{{topic_set.topic_set_id}},&nbsp;{{topic_set.assign_course_name}},&nbsp;{{topic_set.topic_id}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No topic set are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="editTopicSetHelp" class="form-text text-muted">Select one if you want to edit a topic set</small>
+    </div>
+
+    <div class="form-group">
+        <label for="topicSetCourse">Choose a course</label>
+        <select id="topicSetCourse" name="topicSetCourse" class="form-control">
+            {% if course_list %}
+            {% for course in course_list %}
+            <option>{{course.subject_code}}&nbsp;{{course.course_number}},{{course.course_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No course are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="topicSetCourseHelp" class="form-text text-muted">Select a course for this topic set</small>
+    </div>
+
+    <div class="form-group">
+        <label for="topicSetTopic">Choose a topic</label>
+        <select id="topicSetTopic" name="topicSetTopic" class="form-control">
+            {% if topic_list %}
+            {% for topic in topic_list %}
+            <option>{{topic.topic_id}},&nbsp;{{topic.curriculum_name}},&nbsp;{{topic.topic_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No topics are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="topicSetTopicHelp" class="form-text text-muted">Select a topic for this topic set</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="create_topic_set">Submit</button>
+
+</form>
+</body>
+</head>
+{% endblock %}
