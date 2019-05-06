@@ -56,12 +56,19 @@
 <p>No topic set are available.</p>
 {% endif %}
 
+{% if error %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Failed -</strong> Error: Please check your inputs!
+</div>
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
     <div class="form-group">
         <label for="editTopicSet">Option</label>
         <select id="editTopicSet" name="editTopicSet" class="form-control">
-            <option value="-1" selected>Add A Topic Set</option>
+            <option value="addTopicSet" selected>Add A Topic Set</option>
             {% if topic_set_list %}
             {% for topic_set in topic_set_list %}
             <option>{{topic_set.topic_set_id}},&nbsp;{{topic_set.assign_course_name}},&nbsp;{{topic_set.topic_id}}</option>
@@ -74,11 +81,18 @@
     </div>
 
     <div class="form-group">
+        <label for="topicSetID">Topic Set ID</label>
+        <input type="number" class="form-control" id="topicSetID" name="topicSetID" aria-describedby="topicSetIDHelp"
+               placeholder="Example: 0" required>
+        <small id="topicSetIDHelp" class="form-text text-muted">Enter a topic set ID</small>
+    </div>
+
+    <div class="form-group">
         <label for="topicSetCourse">Choose a course</label>
         <select id="topicSetCourse" name="topicSetCourse" class="form-control">
             {% if course_list %}
             {% for course in course_list %}
-            <option>{{course.subject_code}}&nbsp;{{course.course_number}},{{course.course_name}}</option>
+            <option>{{course.subject_code}}&nbsp;{{course.course_number}},&nbsp;{{course.course_name}}</option>
             {% endfor %}
             {% else %}
             <option>No course are available, create one first.</option>
