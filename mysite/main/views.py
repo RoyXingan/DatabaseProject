@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse
+from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse, Section, GradeDistribution
 
 
 # Create your views here.
@@ -197,3 +197,90 @@ def curriculum_course(request):
                            "course_list": course_list,
                            "topic_set_list": topic_set_list,
                            "curriculum_list": curriculum_list})
+
+
+def section(request):
+    course_list = Course.objects.order_by('course_name')
+    section_list = Section.objects.order_by('section_id')
+    grade_distribution_list = GradeDistribution.objects.order_by('grade_distribution_id')
+
+    if request.method == 'POST':
+        # try:
+        if 'create_section' in request.POST:
+            post = Section()
+            sameIDFound = False
+            for sect in section_list:
+                if sect.section_id == request.POST.get('section_id'):
+                    sameIDFound = True
+                    break
+            if not sameIDFound:
+                post.section_id = request.POST.get('section_id')
+                print('Section ID = ' + str(post.section_id))
+            else:
+                print('Error: Section ID already being used!')
+
+            hasCour = False
+            for aCourse in course_list:
+                tCourse = request.POST.get('course_name').split(",")
+                if aCourse.course_name == tCourse[0]:
+                    post.course_name = aCourse
+                    hasCour = True
+                    break
+            if not hasCour:
+                print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                return HttpResponseRedirect('/course')
+            print('Course Name = ' + post.course_name.course_name)
+
+            post.semester = request.POST.get('semester')
+            print('Semester = ' + post.semester)
+            post.student_count = request.POST.get('student_count')
+            print('Student Count = ' + str(post.student_count))
+            post.comment1 = request.POST.get('comment1')
+            print('Comment 1 = ' + post.comment1)
+            post.comment2 = request.POST.get('comment2')
+            print('Comment 2 = ' + post.comment2)
+            # post.grade_distribution_id = request.POST.get('grade_distribution_id')
+            # aGD = GradeDistribution()
+            # aGD.grade_distribution_id = request.POST.get('grade_distribution_id')
+            # aGD.A_plus = 97
+            # aGD.A = 95
+            # aGD.A_minus = 90
+            # aGD.B_plus = 87
+            # aGD.B = 85
+            # aGD.B_minus = 80
+            # aGD.C_plus = 77
+            # aGD.C = 75
+            # aGD.C_minus = 70
+            # aGD.D_plus = 67
+            # aGD.D = 65
+            # aGD.D_minus = 60
+            # aGD.Fail = 59
+            # aGD.Withdraw = 50
+            # aGD.Incomplete = 0
+            # post.grade_distribution_id = aGD
+            sameIDFound = False
+            for aGD in grade_distribution_list:
+                if str(aGD.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
+                    post.grade_distribution_id = aGD
+                    sameIDFound = True
+                    break
+            if not sameIDFound:
+                print('Error: No Grade Distribution ID match found!')
+
+            print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
+            post.save()
+            print('FINISHED SAVING SECTION')
+        # except Exception as error:
+        #     return render(request=request,
+        #                   template_name="main/section.html",
+        #                   context={"course_list": course_list,
+        #                            "section_list": section_list,
+        #                            "error": error})
+
+        # return HttpResponseRedirect('/')
+
+    return render(request=request,
+                  template_name="main/section.html",
+                  context={"course_list": course_list,
+                           "section_list": section_list,
+                           "grade_distribution_list": grade_distribution_list})

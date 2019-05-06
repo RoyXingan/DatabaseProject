@@ -25,4 +25,5 @@ urlpatterns = [
     path("topic", views.topic, name="topic"),
     path("topic_set", views.topic_set, name="topic_set"),
     path("curriculum_course", views.curriculum_course, name="curriculum_course"),
+    path("section", views.section, name="section"),
 ]
