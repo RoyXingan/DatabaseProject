@@ -48,11 +48,18 @@
 {% if course_list %}
 <ul>
     {% for course in course_list %}
-    <li><a href="#">{{ course.course_name }}</a></li>
+    <li><a href="#">{{course.course_name}},&nbsp;{{course.subject_code}}&nbsp;{{course.course_number}}</a></li>
     {% endfor %}
 </ul>
 {% else %}
 <p>No course are available.</p>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Failed -</strong> Error: Please check input conflicts!
+</div>
 {% endif %}
 
 <form method="post">

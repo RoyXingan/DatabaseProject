@@ -45,19 +45,26 @@ def course(request):
     course_list = Course.objects.order_by('course_name')
 
     if request.method == 'POST':
-        if 'create_course' in request.POST:
-            post = Course()
-            post.course_name = request.POST.get('courseName')
-            print('Course Name = ' + post.course_name)
-            post.subject_code = request.POST.get('subjectCode')
-            print('Subject Code = ' + post.subject_code)
-            post.course_number = request.POST.get('courseNumber')
-            print('Course Number = ' + post.course_number)
-            post.credits = request.POST.get('credits')
-            print('Credits = ' + post.credits)
-            post.description = request.POST.get('description')
-            print('Description = ' + post.description)
-            post.save()
+        try:
+            if 'create_course' in request.POST:
+                post = Course()
+                post.course_name = request.POST.get('courseName')
+                print('Course Name = ' + post.course_name)
+                post.subject_code = request.POST.get('subjectCode')
+                print('Subject Code = ' + post.subject_code)
+                post.course_number = request.POST.get('courseNumber')
+                print('Course Number = ' + post.course_number)
+                post.credits = request.POST.get('credits')
+                print('Credits = ' + post.credits)
+                post.description = request.POST.get('description')
+                print('Description = ' + post.description)
+                post.save()
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/course.html",
+                          context={"course_list": course_list,
+                                   "error": error})
+
         # return HttpResponseRedirect('/')
 
     return render(request=request,

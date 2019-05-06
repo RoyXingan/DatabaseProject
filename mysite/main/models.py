@@ -46,6 +46,9 @@ class Course(models.Model):
 
     class Meta:
         db_table = 'course'
+        constraints = [
+            models.UniqueConstraint(fields=['subject_code', 'course_number'], name='unique_course')
+        ]
 
     def __str__(self):
         return str(self.subject_code) + str(self.course_number) + ' ' + str(self.course_name)
