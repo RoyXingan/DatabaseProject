@@ -45,28 +45,40 @@
     </style>
 <body>
 
-{% if curriculum_list %}
+{% if curriculum_course_list %}
     <ul>
-    {% for curriculum in curriculum_list %}
-        <li><a href="#">{{ curriculum.curriculum_name }}</a></li>
+    {% for curriculum_course in curriculum_course_list %}
+        <li><a href="#">{{curriculum_course.curriculum_name}},&nbsp;{{curriculum_course.course_name}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>No curriculum are available.</p>
+    <p>No curriculum course are available.</p>
 {% endif %}
 
-{% if course_list %}
-<ul>
-    {% for course in course_list %}
-    <li><a href="#">{{course.course_name}},&nbsp;{{course.subject_code}}&nbsp;{{course.course_number}}</a></li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No course are available.</p>
+{% if error %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Failed -</strong> Error: Please check your inputs!
+</div>
 {% endif %}
 
 <form method="post">
     {% csrf_token %}
+    <div class="form-group">
+        <label for="editCurriculumCourse">Option</label>
+        <select id="editCurriculumCourse" name="editCurriculumCourse" class="form-control">
+            <option value="addCurriculumCourse" selected>Add A Curriculum Course</option>
+            {% if curriculum_course_list %}
+            {% for curriculum_course in curriculum_course_list %}
+            <option>{{curriculum_course.id}},&nbsp;{{curriculum_course.curriculum_name}},&nbsp;{{curriculum_course.course_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No course in any curriculum, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="editTopicSetHelp" class="form-text text-muted">Select one if you want to edit a curriculum course</small>
+    </div>
+
     <div class="form-group">
         <label for="curriculum_name">Curriculum Name</label>
         <select id="curriculum_name" name="curriculum_name" class="form-control">
@@ -86,7 +98,7 @@
         <select id="course_name" name="course_name" class="form-control">
             {% if course_list %}
             {% for course in course_list %}
-            <option>{{course.subject_code}}&nbsp;{{course.course_number}},{{course.course_name}}</option>
+            <option>{{course.subject_code}}&nbsp;{{course.course_number}},&nbsp;{{course.course_name}}</option>
             {% endfor %}
             {% else %}
             <option>No course are available, create one first.</option>
@@ -97,14 +109,14 @@
 
     <div class="form-group form-check">
         <input class="form-check-input" type="checkbox" id="required" name="required">
-        <label class="form-check-label" for="goalValid">~ Required</label>
+        <label class="form-check-label" for="required">~ Required</label>
     </div>
 
     <div class="form-group">
         <label for="topic_set_id">Topic Set ID</label>
         <input type="number" class="form-control" id="topic_set_id" name="topic_set_id"
-               aria-describedby="topicSetIdHelp" min="0"
-               placeholder="Example: 123456" required>
+               aria-describedby="topicSetIdHelp"
+               placeholder="Example: 0" required>
         <small id="topicSetIdHelp" class="form-text text-muted">Enter the topic set ID</small>
     </div>
 
@@ -112,7 +124,7 @@
         <label for="units_of_topic">Units of Topic</label>
         <input type="number" class="form-control" id="units_of_topic" name="units_of_topic" aria-describedby="unitsOfTopicHelp"
                placeholder="Example: 123">
-        <small id="unitsOfTopicHelp" class="form-text text-muted">Enter units of topic for the curriculum</small>
+        <small id="unitsOfTopicHelp" class="form-text text-muted">Enter units of topic for the course</small>
     </div>
 
     <button type="submit" class="btn btn-primary" name="create_curriculum_course">Submit</button>
