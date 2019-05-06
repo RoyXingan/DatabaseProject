@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Curriculum, Course, Topic, TopicSet
+from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse
 
 
 # Create your views here.
@@ -135,3 +135,65 @@ def topic_set(request):
                   context={"topic_list": topic_list,
                            "course_list": course_list,
                            "topic_set_list": topic_set_list})
+
+
+def curriculum_course(request):
+    curriculum_list = Curriculum.objects.order_by('curriculum_name')
+    course_list = Course.objects.order_by('course_name')
+    topic_list = Topic.objects.order_by('topic_id')
+    topic_set_list = TopicSet.objects.order_by('topic_set_id')
+
+    if request.method == 'POST':
+        if 'create_curriculum_course' in request.POST:
+            post = CurriculumCourse()
+            hasCurr = False
+            for aCurriculum in curriculum_list:
+                if aCurriculum.curriculum_name == request.POST.get('curriculum_name'):
+                    post.curriculum_name = aCurriculum
+                    hasCurr = True
+                    break
+            if not hasCurr:
+                print("Error: No matching curriculum found!")
+                return HttpResponseRedirect('/curriculum')
+            print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
+            hasCour = False
+            for aCourse in course_list:
+                tCourse = request.POST.get('course_name').split(",")
+                if aCourse.course_name == tCourse[1]:
+                    post.course_name = aCourse
+                    hasCour = True
+                    break
+            if not hasCour:
+                print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                return HttpResponseRedirect('/course')
+            print('Course Name = ' + post.course_name.course_name)
+            # print('course_name = ' + post.course_name)
+            if request.POST.get('required') == 'on':
+                post.required = True
+                print('This curriculum course is required!')
+            else:
+                post.required = False
+                print('This curriculum course is NOT required!')
+            hasTopicSet = False
+            for aTopicSet in topic_set_list:
+                if str(aTopicSet.topic_set_id) == str(request.POST.get('topic_set_id')):
+                    post.topic_set_id = aTopicSet
+                    hasTopicSet = True
+                    break
+                else:
+                    print(str(aTopicSet.topic_set_id) + ' != ' + str(request.POST.get('topic_set_id')))
+            if not hasTopicSet:
+                print("Error: No topic set id " + request.POST.get('topic_set_id') + " found!")
+                return HttpResponseRedirect('/topic_set')
+            print('Topic set ID = ' + str(post.topic_set_id.topic_set_id))
+            post.units_of_topic = request.POST.get('units_of_topic')
+            print('Units of Topic = ' + post.units_of_topic)
+            post.save()
+        # return HttpResponseRedirect('/')
+
+    return render(request=request,
+                  template_name="main/curriculum_course.html",
+                  context={"topic_list": topic_list,
+                           "course_list": course_list,
+                           "topic_set_list": topic_set_list,
+                           "curriculum_list": curriculum_list})
