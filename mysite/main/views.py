@@ -79,7 +79,7 @@ def topic(request):
     if request.method == 'POST':
         if 'create_topic' in request.POST:
             post = Topic()
-            if not request.POST.get('editTopic') == -1:
+            if not request.POST.get('editTopic') == 'addTopic':
                 topics = request.POST.get('editTopic').split(",")
                 post.topic_id = topics[0]
                 print('Topic ID = ' + post.topic_id)
@@ -114,21 +114,37 @@ def topic_set(request):
     topic_set_list = TopicSet.objects.order_by('topic_set_id')
 
     if request.method == 'POST':
-        if 'create_topic_set' in request.POST:
-            post = TopicSet()
-            if not request.POST.get('editTopicSet') == -1:
-                topic_sets = request.POST.get('editTopicSet').split(",")
-                post.topic_set_id = topic_sets[0]
-                print('Topic set ID = ' + post.topic_set_id)
+        try:
+            if 'create_topic_set' in request.POST:
+                post = TopicSet()
+                if not request.POST.get('editTopicSet') == 'addTopicSet':
+                    print("Editing...")
+                    topic_sets = request.POST.get('editTopicSet').split(",")
+                    post.topic_set_id = topic_sets[0]
+                    print('Topic set ID = ' + post.topic_set_id)
+                else:
+                    print("Creating new topic set...")
 
-            course_name = request.POST.get('topicSetCourse').split(",")
-            post.assign_course_name = course_name[1]
-            print('Topic Course = ' + post.assign_course_name)
-            topic = request.POST.get('topicSetTopic').split(",")
-            post.topic_id = topic[0]
-            print('Topic ID = ' + post.topic_id)
-            post.curriculum_name = topic[1]
-            print('Curriculum Name = ' + post.curriculum_name)
+                post.topic_set_id = request.POST.get('topicSetID')
+                print('Topic Set ID = ' + post.topic_set_id)
+
+                course_name = request.POST.get('topicSetCourse').split(",\xa0")
+                for courses in course_list:
+                    if courses.course_name == course_name[1]:
+                        post.assign_course_name = courses
+                print('Topic Course = ' + post.assign_course_name.course_name)
+
+                aTopic = request.POST.get('topicSetTopic').split(",")
+                for topics in topic_list:
+                    if topics.topic_id == int(aTopic[0]):
+                        post.topic_id = topics
+                print('Topic ID = ' + str(post.topic_id.topic_id))
+                post.save()
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/topic_set.html",
+                          context={"course_list": course_list,
+                                   "error": error})
 
     return render(request=request,
                   template_name="main/topic_set.html",

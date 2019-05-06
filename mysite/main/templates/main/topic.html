@@ -61,7 +61,7 @@
     <div class="form-group">
         <label for="editTopic">Option</label>
         <select id="editTopic" name="editTopic" class="form-control">
-            <option value="-1" selected>Add A Topic</option>
+            <option value="addTopic" selected>Add A Topic</option>
             {% if topic_list %}
             {% for topic in topic_list %}
             <option>{{topic.topic_id}},&nbsp;{{topic.curriculum_name}},&nbsp;{{topic.topic_name}}</option>

@@ -80,15 +80,14 @@ class Topic(models.Model):
 
 # TopicSet model
 class TopicSet(models.Model):
-    topic_set_id = models.AutoField(primary_key=True)
+    topic_set_id = models.IntegerField(default=0)
     assign_course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     topic_id = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'topic_set'
         constraints = [
-            models.UniqueConstraint(fields=['topic_set_id', 'course_name', 'topic_id', 'curriculum_name'],
+            models.UniqueConstraint(fields=['topic_set_id', 'assign_course_name', 'topic_id'],
                                     name='unique_topic_set')
         ]
 
@@ -101,7 +100,7 @@ class CurriculumCourse(models.Model):
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     required = models.BooleanField(default=False)
-    topic_set_id = models.ForeignKey(TopicSet, on_delete=models.CASCADE)
+    topic_set_id = models.IntegerField(default=0)
     units_of_topic = models.PositiveSmallIntegerField(default=0)
 
     class Meta:
