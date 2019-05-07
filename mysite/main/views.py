@@ -446,3 +446,58 @@ def grade_distribution(request):
                   context={"course_list": course_list,
                            "section_list": section_list,
                            "grade_distribution_list": grade_distribution_list})
+
+
+def query_one(request):
+    curriculum_list = Curriculum.objects.order_by('curriculum_name')
+    course_list = Course.objects.order_by('course_name')
+    topic_list = Topic.objects.order_by('topic_id')
+    result_list = Curriculum.objects.none()
+    curriculum_course_list = CurriculumCourse.objects.order_by('id')
+
+    if request.method == 'POST':
+        try:
+            if 'create_query_one' in request.POST:
+                post = Curriculum()
+                hasCurr = False
+                for aCurriculum in curriculum_list:
+                    if aCurriculum.curriculum_name == request.POST.get('curriculum_name'):
+                        post.curriculum_name = aCurriculum
+                        hasCurr = True
+                        break
+                if not hasCurr:
+                    print('Error: Error finding Curriculum reference!')
+                result_list = Curriculum.objects.filter(curriculum_name=str(post.curriculum_name.curriculum_name))
+
+                # print('Query=>')
+                # print(result_list.query)
+                print('---')
+                for rCurr in result_list:
+                    print('curriculum_name->' + rCurr.curriculum_name)
+                    print('admin_name->' + rCurr.admin_name)
+                    print('admin_ID->' + str(rCurr.admin_id))
+                    print('min_credits->' + str(rCurr.min_credits))
+                    print('topic_coverage->' + rCurr.topic_coverage)
+                    print('goal_valid_credits->' + str(rCurr.goal_valid_credits))
+                    if rCurr.goal_valid:
+                        print('goal_valid->TRUE')
+                    else:
+                        print('goal_valid->FALSE')
+
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/query_one.html",
+                          context={"topic_list": topic_list,
+                                   "course_list": course_list,
+                                   "curriculum_list": curriculum_list,
+                                   "curriculum_course_list": curriculum_course_list,
+                                   "result_list": result_list,
+                                   "error": error})
+
+    return render(request=request,
+                  template_name="main/query_one.html",
+                  context={"topic_list": topic_list,
+                           "course_list": course_list,
+                           "result_list": result_list,
+                           "curriculum_list": curriculum_list,
+                           "curriculum_course_list": curriculum_course_list})

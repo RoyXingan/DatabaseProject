@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}Query Display{% endblock %}
+
+{% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="curriculum_name">Display information of a chosen curriculum</label>
+        <select id="curriculum_name" name="curriculum_name" class="form-control">
+            {% if curriculum_list %}
+            {% for curriculum in curriculum_list %}
+            <option>{{ curriculum.curriculum_name }}</option>
+            {% endfor %}
+            {% else %}
+            <option>No curriculum are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
+    </div>
+    <button type="submit" class="btn btn-primary" name="create_query_one">Submit</button>
+</form>
+
+{% if result_list %}
+    <ul>
+    {% for curriculum in result_list %}
+        <a> Result: <br>
+            Curriculum Name = {{curriculum.curriculum_name}} <br>
+            Admin Name = {{ curriculum.admin_name }} <br>
+            Admin ID = {{ curriculum.admin_id }} <br>
+            Min Credits = {{ curriculum.min_credits }} <br>
+            Topic Coverage = {{ curriculum.topic_coverage }} <br>
+            Goal Valid Credits = {{ curriculum.goal_valid_credits }} <br>
+            {% if curriculum.goal_valid %}
+                Goal Valid = TRUE <br>
+            {% else %}
+                Goal Valid = FALSE }} <br>
+            {% endif %}
+            <br>
+            Topics Included: <br>
+            {% for topic in topic_list %}
+                {% if topic.curriculum_name.curriculum_name == curriculum.curriculum_name %}
+                    <ul>
+                    ------------ <br>
+                    Topic Name = {{ topic.topic_name }} <br>
+                    Topic ID = {{ topic.topic_id }} <br>
+                    Level = {{ topic.level }} <br>
+                    Subject Area = {{ topic.subject_area }} <br>
+                    Units = {{ topic.units }} <br>
+                    ------------ <br>
+                    </ul>
+                {% endif %}
+            {% endfor %}
+            Courses Included: <br>
+            {% for course in course_list %}
+                {% for curriculum_course in curriculum_course_list %}
+                    {% if curriculum_course.course_name.course_name == course.course_name %}
+                        <ul>
+                        ------------ <br>
+                        Course Name = {{ course.course_name }} <br>
+                        Subject Code = {{ course.subject_code }} <br>
+                        Course Number = {{ course.course_number }} <br>
+                        Credits = {{ course.credits }} <br>
+                        Description = {{ course.description }} <br>
+                        ------------ <br>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+        </a>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No query matches found.</p>
+{% endif %}
+
+</body>
+</head>
+{% endblock %}
