@@ -102,6 +102,7 @@ class CurriculumCourse(models.Model):
     required = models.BooleanField(default=False)
     topic_set_id = models.IntegerField(default=0)
     units_of_topic = models.PositiveSmallIntegerField(default=0)
+    goal_id = models.ForeignKey('Goal', on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = 'curriculum_course'
@@ -150,7 +151,6 @@ class Section(models.Model):
 class Goal(models.Model):
     goal_id = models.AutoField(primary_key=True)
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
-    course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
     grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE, null=True)
 
@@ -158,12 +158,13 @@ class Goal(models.Model):
         db_table = 'goal'
 
     def __str__(self):
-        return str(self.goal_id) + ' ' + str(self.curriculum_name) + ' ' + str(self.course_name)
+        return str(self.goal_id) + ' ' + str(self.curriculum_name)
 
 
 # GradeDistribution model
 class GradeDistribution(models.Model):
     grade_distribution_id = models.AutoField(primary_key=True)
+    total_student = models.PositiveIntegerField(default=0)
     A_plus = models.PositiveIntegerField(default=0)
     A = models.PositiveIntegerField(default=0)
     A_minus = models.PositiveIntegerField(default=0)
