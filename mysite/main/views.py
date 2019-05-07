@@ -260,15 +260,19 @@ def section(request):
                 print('Comment 1 = ' + post.comment1)
                 post.comment2 = request.POST.get('comment2')
                 print('Comment 2 = ' + post.comment2)
-                grade_dist_found = False
-                for grade_dist in grade_distribution_list:
-                    if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
-                        post.grade_distribution_id = grade_dist
-                        grade_dist_found = True
-                        break
-                if not grade_dist_found:
-                    return HttpResponseRedirect('/grade_distribution')
-                print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
+
+                if request.POST.get('grade_distribution_id') == 'null':
+                    post.grade_distribution_id = None
+                else:
+                    grade_dist_found = False
+                    for grade_dist in grade_distribution_list:
+                        if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
+                            post.grade_distribution_id = grade_dist
+                            grade_dist_found = True
+                            break
+                    if not grade_dist_found:
+                        return HttpResponseRedirect('/grade_distribution')
+                    print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
                 post.save()
                 print('FINISHED SAVING SECTION')
         except Exception as error:
@@ -331,15 +335,18 @@ def goal(request):
                 post.description = request.POST.get('description')
                 print('Description = ' + post.description)
 
-                grade_dist_found = False
-                for grade_dist in grade_distribution_list:
-                    if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
-                        post.grade_distribution_id = grade_dist
-                        grade_dist_found = True
-                        break
-                if not grade_dist_found:
-                    return HttpResponseRedirect('/grade_distribution')
-                print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
+                if request.POST.get('grade_distribution_id') == 'null':
+                    post.grade_distribution_id = None
+                else:
+                    grade_dist_found = False
+                    for grade_dist in grade_distribution_list:
+                        if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
+                            post.grade_distribution_id = grade_dist
+                            grade_dist_found = True
+                            break
+                    if not grade_dist_found:
+                        return HttpResponseRedirect('/grade_distribution')
+                    print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
                 post.save()
             # return HttpResponseRedirect('/')
         except Exception as error:

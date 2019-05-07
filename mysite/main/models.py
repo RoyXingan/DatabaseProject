@@ -133,7 +133,7 @@ class Section(models.Model):
     student_count = models.PositiveIntegerField(default=0)
     comment1 = models.TextField(blank=True)
     comment2 = models.TextField(blank=True)
-    grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE)
+    grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = 'section'
@@ -152,7 +152,7 @@ class Goal(models.Model):
     curriculum_name = models.ForeignKey(Curriculum, on_delete=models.CASCADE)
     course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
-    grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE)
+    grade_distribution_id = models.ForeignKey('GradeDistribution', on_delete=models.CASCADE, null=True)
 
     class Meta:
         db_table = 'goal'

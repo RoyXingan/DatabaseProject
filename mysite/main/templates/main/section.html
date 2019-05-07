@@ -135,6 +135,7 @@
     <div class="form-group">
         <label for="grade_distribution_id">Grade Distribution ID</label>
         <select id="grade_distribution_id" name="grade_distribution_id" class="form-control">
+            <option value="null" selected> Not Graded </option>
             {% if grade_distribution_list %}
             {% for grade_distribution in grade_distribution_list %}
             <option>{{grade_distribution.grade_distribution_id}}</option>
@@ -147,7 +148,8 @@
     </div>
 
     <button type="submit" class="btn btn-primary" name="create_section">Submit</button>
-
+    <a class="btn btn-secondary" href="topic">Create a topic >></a>
+    <a class="btn btn-secondary" href="grade_distribution">Add grade distribution >></a>
 </form>
 </body>
 </head>
