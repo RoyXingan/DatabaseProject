@@ -261,25 +261,6 @@ def section(request):
             print('Comment 1 = ' + post.comment1)
             post.comment2 = request.POST.get('comment2')
             print('Comment 2 = ' + post.comment2)
-            # post.grade_distribution_id = request.POST.get('grade_distribution_id')
-            # post = GradeDistribution()
-            # post.grade_distribution_id = request.POST.get('grade_distribution_id')
-            # post.A_plus = 97
-            # post.A = 95
-            # post.A_minus = 90
-            # post.B_plus = 87
-            # post.B = 85
-            # post.B_minus = 80
-            # post.C_plus = 77
-            # post.C = 75
-            # post.C_minus = 70
-            # post.D_plus = 67
-            # post.D = 65
-            # post.D_minus = 60
-            # post.Fail = 59
-            # post.Withdraw = 50
-            # post.Incomplete = 0
-            # post.grade_distribution_id = post
             sameIDFound = False
             for post in grade_distribution_list:
                 if str(post.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
@@ -298,7 +279,6 @@ def section(request):
         #                   context={"course_list": course_list,
         #                            "section_list": section_list,
         #                            "error": error})
-
         # return HttpResponseRedirect('/')
 
     return render(request=request,
@@ -382,64 +362,63 @@ def grade_distribution(request):
     grade_distribution_list = GradeDistribution.objects.order_by('grade_distribution_id')
 
     if request.method == 'POST':
-        # try:
-        if 'create_grade_distribution' in request.POST:
-            post = GradeDistribution()
-            sameIDFound = False
-            for aGD in grade_distribution_list:
-                if str(aGD.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
-                    post.grade_distribution_id = aGD
-                    sameIDFound = True
-                    break
-            if not sameIDFound:
-                print('Error: No Grade Distribution ID match found!')
+        try:
+            if 'create_grade_distribution' in request.POST:
+                post = GradeDistribution()
+                sameIDFound = False
+                for aGD in grade_distribution_list:
+                    if str(aGD.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
+                        post.grade_distribution_id = aGD
+                        sameIDFound = True
+                        break
+                if not sameIDFound:
+                    print('Error: No Grade Distribution ID match found!')
 
-            print('Grade Distribution ID = ' + str(post.grade_distribution_id))
-            post.A_plus = request.POST.get('A_plus')
-            print('A+ = ' + str(post.A_plus))
-            post.A = request.POST.get('A')
-            print('A = ' + str(post.A))
-            post.A_minus = request.POST.get('A_minus')
-            print('A- = ' + str(post.A_minus))
+                print('Grade Distribution ID = ' + str(post.grade_distribution_id))
+                post.A_plus = request.POST.get('A_plus')
+                print('A+ = ' + str(post.A_plus))
+                post.A = request.POST.get('A')
+                print('A = ' + str(post.A))
+                post.A_minus = request.POST.get('A_minus')
+                print('A- = ' + str(post.A_minus))
 
-            post.B_plus = request.POST.get('B_plus')
-            print('B+ = ' + str(post.B_plus))
-            post.B = request.POST.get('B')
-            print('B = ' + str(post.B))
-            post.B_minus = request.POST.get('B_minus')
-            print('B- = ' + str(post.B_minus))
+                post.B_plus = request.POST.get('B_plus')
+                print('B+ = ' + str(post.B_plus))
+                post.B = request.POST.get('B')
+                print('B = ' + str(post.B))
+                post.B_minus = request.POST.get('B_minus')
+                print('B- = ' + str(post.B_minus))
 
-            post.C_plus = request.POST.get('C_plus')
-            print('C+ = ' + str(post.C_plus))
-            post.C = request.POST.get('C')
-            print('C = ' + str(post.C))
-            post.C_minus = request.POST.get('C_minus')
-            print('C- = ' + str(post.C_minus))
+                post.C_plus = request.POST.get('C_plus')
+                print('C+ = ' + str(post.C_plus))
+                post.C = request.POST.get('C')
+                print('C = ' + str(post.C))
+                post.C_minus = request.POST.get('C_minus')
+                print('C- = ' + str(post.C_minus))
 
-            post.D_plus = request.POST.get('D_plus')
-            print('D+ = ' + str(post.D_plus))
-            post.D = request.POST.get('D')
-            print('D = ' + str(post.D))
-            post.D_minus = request.POST.get('D_minus')
-            print('D- = ' + str(post.D_minus))
+                post.D_plus = request.POST.get('D_plus')
+                print('D+ = ' + str(post.D_plus))
+                post.D = request.POST.get('D')
+                print('D = ' + str(post.D))
+                post.D_minus = request.POST.get('D_minus')
+                print('D- = ' + str(post.D_minus))
 
-            post.Fail = request.POST.get('Fail')
-            print('F = ' + str(post.Fail))
-            post.Withdraw = request.POST.get('Withdraw')
-            print('W = ' + str(post.Withdraw))
-            post.Incomplete = request.POST.get('Incomplete')
-            print('I- = ' + str(post.Incomplete))
+                post.Fail = request.POST.get('Fail')
+                print('F = ' + str(post.Fail))
+                post.Withdraw = request.POST.get('Withdraw')
+                print('W = ' + str(post.Withdraw))
+                post.Incomplete = request.POST.get('Incomplete')
+                print('I- = ' + str(post.Incomplete))
 
-            post.save()
-            print('FINISHED SAVING GRADE DISTRIBUTION')
-        # except Exception as error:
-        #     return render(request=request,
-        #                   template_name="main/section.html",
-        #                   context={"course_list": course_list,
-        #                            "section_list": section_list,
-        #                            "error": error})
-
-        # return HttpResponseRedirect('/')
+                post.save()
+                print('FINISHED SAVING GRADE DISTRIBUTION')
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/section.html",
+                          context={"course_list": course_list,
+                                   "section_list": section_list,
+                                   "error": error})
+            # return HttpResponseRedirect('/')
 
     return render(request=request,
                   template_name="main/grade_distribution.html",

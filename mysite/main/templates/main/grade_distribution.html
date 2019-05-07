@@ -45,10 +45,20 @@
     </style>
 <body>
 
+{% if grade_distribution_list %}
+<ul>
+    {% for grade_distribution in grade_distribution_list %}
+    <li><a href="#">{{grade_distribution.grade_distribution_id}}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No grade distribution are available.</p>
+{% endif %}
+
 {% if error %}
 <div class="alert alert-danger fade in">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-  <strong>Failed -</strong> Error: Please check input conflicts!
+  <strong>Failed -</strong> Error: Please check inputs!
 </div>
 {% endif %}
 
@@ -58,120 +68,120 @@
         <label for="grade_distribution_id">Grade Distribution ID</label>
         <input type="number" class="form-control" id="grade_distribution_id" name="grade_distribution_id"
                aria-describedby="gradeDistributionIDHelp" min="0"
-               placeholder="Example: 33" required>
-        <small id="gradeDistributionIDHelp" class="form-text text-muted">Enter grade distribution</small>
+               placeholder="Enter an ID" required>
+        <small id="gradeDistributionIDHelp" class="form-text text-muted">Enter grade distribution id or enter exist for edit</small>
     </div>
 
     <div class="form-group">
         <label for="A_plus">A+ Grade</label>
         <input type="number" class="form-control" id="A_plus" name="A_plus"
                aria-describedby="aPlusHelp" min="0"
-               placeholder="Example: 97" required>
-        <small id="aPlusHelp" class="form-text text-muted">Enter grade for A+</small>
+               placeholder=0 required>
+        <small id="aPlusHelp" class="form-text text-muted">Enter amount for A+</small>
     </div>
     <div class="form-group">
         <label for="A">A Grade</label>
         <input type="number" class="form-control" id="A" name="A"
                aria-describedby="aHelp" min="0"
-               placeholder="Example: 95" required>
-        <small id="aHelp" class="form-text text-muted">Enter grade for A</small>
+               placeholder=0 required>
+        <small id="aHelp" class="form-text text-muted">Enter amount for A</small>
     </div>
     <div class="form-group">
         <label for="A_minus">A- Grade</label>
         <input type="number" class="form-control" id="A_minus" name="A_minus"
                aria-describedby="aMinusHelp" min="0"
-               placeholder="Example: 90" required>
-        <small id="aMinusHelp" class="form-text text-muted">Enter grade for A-</small>
+               placeholder=0 required>
+        <small id="aMinusHelp" class="form-text text-muted">Enter amount for A-</small>
     </div>
 
     <div class="form-group">
         <label for="B_plus">B+ Grade</label>
         <input type="number" class="form-control" id="B_plus" name="B_plus"
                aria-describedby="bPlusHelp" min="0"
-               placeholder="Example: 87" required>
-        <small id="bPlusHelp" class="form-text text-muted">Enter grade for B+</small>
+               placeholder=0 required>
+        <small id="bPlusHelp" class="form-text text-muted">Enter amount for B+</small>
     </div>
     <div class="form-group">
         <label for="B">B Grade</label>
         <input type="number" class="form-control" id="B" name="B"
                aria-describedby="bHelp" min="0"
-               placeholder="Example: 85" required>
-        <small id="bHelp" class="form-text text-muted">Enter grade for B</small>
+               placeholder=0 required>
+        <small id="bHelp" class="form-text text-muted">Enter amount for B</small>
     </div>
     <div class="form-group">
         <label for="B_minus">B- Grade</label>
         <input type="number" class="form-control" id="B_minus" name="B_minus"
                aria-describedby="bMinusHelp" min="0"
-               placeholder="Example: 80" required>
-        <small id="bMinusHelp" class="form-text text-muted">Enter grade for B-</small>
+               placeholder=0 required>
+        <small id="bMinusHelp" class="form-text text-muted">Enter amount for B-</small>
     </div>
 
     <div class="form-group">
         <label for="C_plus">C+ Grade</label>
         <input type="number" class="form-control" id="C_plus" name="C_plus"
                aria-describedby="cPlusHelp" min="0"
-               placeholder="Example: 77" required>
-        <small id="cPlusHelp" class="form-text text-muted">Enter grade for C+</small>
+               placeholder=0 required>
+        <small id="cPlusHelp" class="form-text text-muted">Enter amount for C+</small>
     </div>
     <div class="form-group">
         <label for="C">C Grade</label>
         <input type="number" class="form-control" id="C" name="C"
                aria-describedby="cHelp" min="0"
-               placeholder="Example: 75" required>
-        <small id="cHelp" class="form-text text-muted">Enter grade for C</small>
+               placeholder=0 required>
+        <small id="cHelp" class="form-text text-muted">Enter amount for C</small>
     </div>
     <div class="form-group">
         <label for="C_minus">C- Grade</label>
         <input type="number" class="form-control" id="C_minus" name="C_minus"
                aria-describedby="cMinusHelp" min="0"
-               placeholder="Example: 70" required>
-        <small id="cMinusHelp" class="form-text text-muted">Enter grade for C-</small>
+               placeholder=0 required>
+        <small id="cMinusHelp" class="form-text text-muted">Enter amount for C-</small>
     </div>
 
     <div class="form-group">
         <label for="D_plus">D+ Grade</label>
         <input type="number" class="form-control" id="D_plus" name="D_plus"
                aria-describedby="dPlusHelp" min="0"
-               placeholder="Example: 67" required>
-        <small id="dPlusHelp" class="form-text text-muted">Enter grade for D+</small>
+               placeholder=0 required>
+        <small id="dPlusHelp" class="form-text text-muted">Enter amount for D+</small>
     </div>
     <div class="form-group">
         <label for="D">D Grade</label>
         <input type="number" class="form-control" id="D" name="D"
                aria-describedby="dHelp" min="0"
-               placeholder="Example: 65" required>
-        <small id="dHelp" class="form-text text-muted">Enter grade for D</small>
+               placeholder=0 required>
+        <small id="dHelp" class="form-text text-muted">Enter amount for D</small>
     </div>
     <div class="form-group">
         <label for="D_minus">D- Grade</label>
         <input type="number" class="form-control" id="D_minus" name="D_minus"
                aria-describedby="dMinusHelp" min="0"
-               placeholder="Example: 60" required>
-        <small id="dMinusHelp" class="form-text text-muted">Enter grade for D-</small>
+               placeholder=0 required>
+        <small id="dMinusHelp" class="form-text text-muted">Enter amount for D-</small>
     </div>
 
     <div class="form-group">
         <label for="Fail">Fail Grade</label>
         <input type="number" class="form-control" id="Fail" name="Fail"
                aria-describedby="failHelp" min="0"
-               placeholder="Example: 55" required>
-        <small id="failHelp" class="form-text text-muted">Enter grade for Fail</small>
+               placeholder=0 required>
+        <small id="failHelp" class="form-text text-muted">Enter amount for Fail</small>
     </div>
 
     <div class="form-group">
         <label for="Withdraw">Withdraw Grade</label>
         <input type="number" class="form-control" id="Withdraw" name="Withdraw"
                aria-describedby="withdrawHelp" min="0"
-               placeholder="Example: 50" required>
-        <small id="withdrawHelp" class="form-text text-muted">Enter grade for Withdraw</small>
+               placeholder=0 required>
+        <small id="withdrawHelp" class="form-text text-muted">Enter amount for Withdraw</small>
     </div>
 
     <div class="form-group">
         <label for="Incomplete">Incomplete Grade</label>
         <input type="number" class="form-control" id="Incomplete" name="Incomplete"
                aria-describedby="incompleteHelp" min="0"
-               placeholder="Example: 1" required>
-        <small id="incompleteHelp" class="form-text text-muted">Enter grade for Incomplete</small>
+               placeholder=0 required>
+        <small id="incompleteHelp" class="form-text text-muted">Enter amount for Incomplete</small>
     </div>
 
     <button type="submit" class="btn btn-primary" name="create_grade_distribution">Submit</button>
