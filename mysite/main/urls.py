@@ -26,5 +26,6 @@ urlpatterns = [
     path("topic_set", views.topic_set, name="topic_set"),
     path("curriculum_course", views.curriculum_course, name="curriculum_course"),
     path("section", views.section, name="section"),
-    path("goal", views.goal, name="goal")
+    path("goal", views.goal, name="goal"),
+    path("grade_distribution", views.grade_distribution, name="grade_distribution"),
 ]
