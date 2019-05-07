@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse, Section, GradeDistribution
+from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse, Section, GradeDistribution, Goal
 
 
 # Create your views here.
@@ -306,3 +306,62 @@ def section(request):
                   context={"course_list": course_list,
                            "section_list": section_list,
                            "grade_distribution_list": grade_distribution_list})
+
+
+def goal(request):
+    curriculum_list = Curriculum.objects.order_by('curriculum_name')
+    course_list = Course.objects.order_by('course_name')
+    goal_list = Goal.objects.order_by('goal_id')
+
+    if request.method == 'POST':
+        try:
+            if 'create_goal' in request.POST:
+                post = Goal()
+                if not request.POST.get('editGoal') == 'addGoal':
+                    print("Editing...")
+                    aGoal = request.POST.get('editGoal').split(",")
+                    post.goal_id = aGoal[0]
+                    print('Curriculum Course ID = ' + post.goal_id)
+                else:
+                    print("Creating new goal...")
+                hasCurr = False
+                for aCurriculum in curriculum_list:
+                    if aCurriculum.curriculum_name == request.POST.get('curriculum_name'):
+                        post.curriculum_name = aCurriculum
+                        hasCurr = True
+                        break
+                if not hasCurr:
+                    print("Error: No matching curriculum found!")
+                    return HttpResponseRedirect('/curriculum')
+                print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
+
+                hasCour = False
+                course_name = request.POST.get('course_name').split(",\xa0")
+                for aCourse in course_list:
+                    if aCourse.course_name == course_name[1]:
+                        post.course_name = aCourse
+                        hasCour = True
+                        break
+                if not hasCour:
+                    print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                    return HttpResponseRedirect('/course')
+
+                print('Course Name = ' + post.course_name.course_name)
+                post.description = request.POST.get('description')
+                print('Description = ' + post.description)
+                # post.grade_distribution_id =
+                post.save()
+            # return HttpResponseRedirect('/')
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/goal.html",
+                          context={"course_list": course_list,
+                                   "curriculum_list": curriculum_list,
+                                   "goal_list": goal_list,
+                                   "error": error})
+
+    return render(request=request,
+                  template_name="main/goal.html",
+                  context={"course_list": course_list,
+                           "curriculum_list": curriculum_list,
+                           "goal_list": goal_list})

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Goal{% endblock %}
+
+{% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+
+{% if goal_list %}
+    <ul>
+    {% for goal in goal_list %}
+        <li><a href="#">{{goal.goal_id}},&nbsp;{{goal.curriculum_name}},&nbsp;{{goal.course_name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No goal are available.</p>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Failed -</strong> Error: Please check your inputs!
+</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="editGoal">Option</label>
+        <select id="editGoal" name="editGoal" class="form-control">
+            <option value="addGoal" selected>Add A Goal</option>
+            {% if goal_list %}
+            {% for goal in goal_list %}
+            <option>{{goal.goal_id}},&nbsp;{{goal.curriculum_name}},&nbsp;{{goal.course_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No goal are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="editGoalHelp" class="form-text text-muted">Select one if you want to edit a goal</small>
+    </div>
+
+    <div class="form-group">
+        <label for="curriculum_name">Curriculum Name</label>
+        <select id="curriculum_name" name="curriculum_name" class="form-control">
+            {% if curriculum_list %}
+            {% for curriculum in curriculum_list %}
+            <option>{{ curriculum.curriculum_name }}</option>
+            {% endfor %}
+            {% else %}
+            <option>No curriculum are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="topicCurriculumHelp" class="form-text text-muted">Choose a curriculum name for this goal</small>
+    </div>
+
+    <div class="form-group">
+        <label for="course_name">Choose a course</label>
+        <select id="course_name" name="course_name" class="form-control">
+            {% if course_list %}
+            {% for course in course_list %}
+            <option>{{course.subject_code}}&nbsp;{{course.course_number}},&nbsp;{{course.course_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No course are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="courseNameHelp" class="form-text text-muted">Select a course for this goal</small>
+    </div>
+
+    <div class="form-group">
+        <label for="description">Goal Description</label>
+        <input type="text" class="form-control" id="description" name="description"
+               aria-describedby="descriptionHelp"
+               placeholder="Example: This goal is very cool" required>
+        <small id="descriptionHelp" class="form-text text-muted">Enter goal description</small>
+    </div>
+
+    <div class="form-group">
+        <label for="gradeDistribution">Grade Distribution</label>
+        <input type="number" class="form-control" id="gradeDistribution" name="gradeDistribution" aria-describedby="gradeDistributionHelp"
+               placeholder="Example: 123">
+        <small id="gradeDistributionHelp" class="form-text text-muted">Enter grade distribution for this goal</small>
+    </div>
+
+    <button type="submit" class="btn btn-primary" name="create_goal">Submit</button>
+</form>
+</body>
+</head>
+{% endblock %}
