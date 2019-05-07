@@ -45,14 +45,14 @@
     </style>
 <body>
 
-{% if course_list %}
+{% if section_list %}
 <ul>
-    {% for course in course_list %}
-    <li><a href="#">{{course.course_name}},&nbsp;{{course.subject_code}}&nbsp;{{course.course_number}}</a></li>
+    {% for section in section_list %}
+    <li><a href="#">{{section.course_name}},&nbsp;Section&nbsp;{{section.section_id}}</a></li>
     {% endfor %}
 </ul>
 {% else %}
-<p>No course are available.</p>
+<p>No section are available.</p>
 {% endif %}
 
 {% if error %}
@@ -65,6 +65,35 @@
 <form method="post">
     {% csrf_token %}
     <div class="form-group">
+        <label for="editSection">Option</label>
+        <select id="editSection" name="editSection" class="form-control">
+            <option value="addSection" selected>Add A Section</option>
+            {% if section_list %}
+            {% for section in section_list %}
+            <option>{{section.id}},{{section.course_name}},&nbsp;Section&nbsp;{{section.section_id}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No section are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="editGoalHelp" class="form-text text-muted">Select one if you want to edit a section</small>
+    </div>
+
+    <div class="form-group">
+        <label for="course_name">Course Name</label>
+        <select id="course_name" name="course_name" class="form-control">
+            {% if course_list %}
+            {% for course in course_list %}
+            <option>{{course.subject_code}}&nbsp;{{course.course_number}},&nbsp;{{course.course_name}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No course are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="courseNameHelp" class="form-text text-muted">Select a course</small>
+    </div>
+
+    <div class="form-group">
         <label for="section_id">Section ID</label>
         <input type="number" class="form-control" id="section_id" name="section_id"
                aria-describedby="sectionIDHelp" min="0"
@@ -73,25 +102,22 @@
     </div>
 
     <div class="form-group">
-        <label for="course_name">Course Name</label>
-        <input type="text" class="form-control" id="course_name" name="course_name" aria-describedby="nameHelp"
-               placeholder="Example: Database" required>
-        <small id="nameHelp" class="form-text text-muted">Enter new course name, or enter exist name above to edit the course</small>
-    </div>
-
-    <div class="form-group">
         <label for="semester">Semester</label>
-        <input type="text" class="form-control" id="semester" name="semester" aria-describedby="semesterHelp"
-               placeholder="Example: FA" required>
-        <small id="semesterHelp" class="form-text text-muted">Enter semester (2 characters)</small>
+        <select id="semester" name="semester" class="form-control">
+            <option value="SP">Spring</option>
+            <option value="SM">Summer</option>
+            <option value="FA">Fall</option>
+            <option value="WT">Winter</option>
+        </select>
+        <small id="semesterHelp" class="form-text text-muted">Select a semester</small>
     </div>
 
     <div class="form-group">
-        <label for="student_count">Student Count</label>
+        <label for="student_count">Student Amount</label>
         <input type="number" class="form-control" id="student_count" name="student_count"
                aria-describedby="studentCountHelp" min="0"
                placeholder="Example: 45" required>
-        <small id="studentCountHelp" class="form-text text-muted">Enter student count</small>
+        <small id="studentCountHelp" class="form-text text-muted">Enter student amount</small>
     </div>
 
     <div class="form-group">
@@ -108,10 +134,16 @@
 
     <div class="form-group">
         <label for="grade_distribution_id">Grade Distribution ID</label>
-        <input type="number" class="form-control" id="grade_distribution_id" name="grade_distribution_id"
-               aria-describedby="gradeDistributionIDHelp" min="0"
-               placeholder="Example: 33" required>
-        <small id="gradeDistributionIDHelp" class="form-text text-muted">Enter grade distribution</small>
+        <select id="grade_distribution_id" name="grade_distribution_id" class="form-control">
+            {% if grade_distribution_list %}
+            {% for grade_distribution in grade_distribution_list %}
+            <option>{{grade_distribution.grade_distribution_id}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No grade distribution are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="gradeDistributionIDHelp" class="form-text text-muted">Select a grade distribution ID from grade distribution page</small>
     </div>
 
     <button type="submit" class="btn btn-primary" name="create_section">Submit</button>

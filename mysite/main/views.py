@@ -227,58 +227,57 @@ def section(request):
     grade_distribution_list = GradeDistribution.objects.order_by('grade_distribution_id')
 
     if request.method == 'POST':
-        # try:
-        if 'create_section' in request.POST:
-            post = Section()
-            sameIDFound = False
-            for sect in section_list:
-                if sect.section_id == request.POST.get('section_id'):
-                    sameIDFound = True
-                    break
-            if not sameIDFound:
+        try:
+            if 'create_section' in request.POST:
+                post = Section()
+                if not request.POST.get('editSection') == 'addSection':
+                    print("Editing...")
+                    aSection = request.POST.get('editSection').split(",")
+                    post.id = aSection[0]
+                    print('Section ID = ' + post.id)
+                else:
+                    print("Creating new section...")
+
+                hasCour = False
+                course_name = request.POST.get('course_name').split(",\xa0")
+                for aCourse in course_list:
+                    if aCourse.course_name == course_name[1]:
+                        post.course_name = aCourse
+                        hasCour = True
+                        break
+                if not hasCour:
+                    print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                    return HttpResponseRedirect('/course')
+                print('Course Name = ' + post.course_name.course_name)
+
                 post.section_id = request.POST.get('section_id')
                 print('Section ID = ' + str(post.section_id))
-            else:
-                print('Error: Section ID already being used!')
-
-            hasCour = False
-            for aCourse in course_list:
-                tCourse = request.POST.get('course_name').split(",")
-                if aCourse.course_name == tCourse[0]:
-                    post.course_name = aCourse
-                    hasCour = True
-                    break
-            if not hasCour:
-                print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
-                return HttpResponseRedirect('/course')
-            print('Course Name = ' + post.course_name.course_name)
-
-            post.semester = request.POST.get('semester')
-            print('Semester = ' + post.semester)
-            post.student_count = request.POST.get('student_count')
-            print('Student Count = ' + str(post.student_count))
-            post.comment1 = request.POST.get('comment1')
-            print('Comment 1 = ' + post.comment1)
-            post.comment2 = request.POST.get('comment2')
-            print('Comment 2 = ' + post.comment2)
-            sameIDFound = False
-            for post in grade_distribution_list:
-                if str(post.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
-                    post.grade_distribution_id = post
-                    sameIDFound = True
-                    break
-            if not sameIDFound:
-                print('Error: No Grade Distribution ID match found!')
-
-            print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
-            post.save()
-            print('FINISHED SAVING SECTION')
-        # except Exception as error:
-        #     return render(request=request,
-        #                   template_name="main/section.html",
-        #                   context={"course_list": course_list,
-        #                            "section_list": section_list,
-        #                            "error": error})
+                post.semester = request.POST.get('semester')
+                print('Semester = ' + post.semester)
+                post.student_count = request.POST.get('student_count')
+                print('Student Count = ' + str(post.student_count))
+                post.comment1 = request.POST.get('comment1')
+                print('Comment 1 = ' + post.comment1)
+                post.comment2 = request.POST.get('comment2')
+                print('Comment 2 = ' + post.comment2)
+                grade_dist_found = False
+                for grade_dist in grade_distribution_list:
+                    if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
+                        post.grade_distribution_id = grade_dist
+                        grade_dist_found = True
+                        break
+                if not grade_dist_found:
+                    return HttpResponseRedirect('/grade_distribution')
+                print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
+                post.save()
+                print('FINISHED SAVING SECTION')
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/section.html",
+                          context={"course_list": course_list,
+                                   "section_list": section_list,
+                                   "grade_distribution_list": grade_distribution_list,
+                                   "error": error})
         # return HttpResponseRedirect('/')
 
     return render(request=request,

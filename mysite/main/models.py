@@ -126,7 +126,8 @@ class Section(models.Model):
         (Fall, 'Fall'),
         (Winter, 'Winter'),
     )
-    section_id = models.PositiveIntegerField(primary_key=True)
+    id = models.AutoField(primary_key=True)
+    section_id = models.PositiveIntegerField(default=0)
     course_name = models.ForeignKey(Course, on_delete=models.CASCADE)
     semester = models.CharField(max_length=2, choices=SEMESTERS)
     student_count = models.PositiveIntegerField(default=0)
@@ -137,7 +138,7 @@ class Section(models.Model):
     class Meta:
         db_table = 'section'
         constraints = [
-            models.UniqueConstraint(fields=['section_id', 'course_name'],
+            models.UniqueConstraint(fields=['section_id', 'course_name', 'semester'],
                                     name='unique_section')
         ]
 

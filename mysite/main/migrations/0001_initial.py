@@ -93,7 +93,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Section',
             fields=[
-                ('section_id', models.PositiveIntegerField(primary_key=True, serialize=False)),
+                ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('section_id', models.PositiveIntegerField(default=0)),
                 ('semester', models.CharField(choices=[('SP', 'Spring'), ('SM', 'Summer'), ('FA', 'Fall'), ('WT', 'Winter')], max_length=2)),
                 ('student_count', models.PositiveIntegerField(default=0)),
                 ('comment1', models.TextField(blank=True)),
@@ -146,7 +147,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='section',
-            constraint=models.UniqueConstraint(fields=('section_id', 'course_name'), name='unique_section'),
+            constraint=models.UniqueConstraint(fields=('section_id', 'course_name', 'semester'), name='unique_section'),
         ),
         migrations.AddConstraint(
             model_name='curriculumcourse',
