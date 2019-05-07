@@ -264,6 +264,8 @@ def section(request):
 
                 post.section_id = request.POST.get('section_id')
                 print('Section ID = ' + str(post.section_id))
+                post.year = request.POST.get('year')
+                print('Year = ' + str(post.year))
                 post.semester = request.POST.get('semester')
                 print('Semester = ' + post.semester)
                 post.student_count = request.POST.get('student_count')
@@ -281,6 +283,8 @@ def section(request):
                         if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
                             post.grade_distribution_id = grade_dist
                             grade_dist_found = True
+                            if grade_dist.total_student != int(post.student_count):
+                                raise ValueError
                             break
                     if not grade_dist_found:
                         return HttpResponseRedirect('/grade_distribution')
@@ -393,41 +397,59 @@ def grade_distribution(request):
                 else:
                     print("Creating new grade distribution...")
 
+                total_student_temp = 0;
                 post.A_plus = request.POST.get('A_plus')
+                total_student_temp += int(post.A_plus)
                 print('A+ = ' + str(post.A_plus))
                 post.A = request.POST.get('A')
+                total_student_temp += int(post.A)
                 print('A = ' + str(post.A))
                 post.A_minus = request.POST.get('A_minus')
+                total_student_temp += int(post.A_minus)
                 print('A- = ' + str(post.A_minus))
 
                 post.B_plus = request.POST.get('B_plus')
+                total_student_temp += int(post.B_plus)
                 print('B+ = ' + str(post.B_plus))
                 post.B = request.POST.get('B')
+                total_student_temp += int(post.B)
                 print('B = ' + str(post.B))
                 post.B_minus = request.POST.get('B_minus')
+                total_student_temp += int(post.B_minus)
                 print('B- = ' + str(post.B_minus))
 
                 post.C_plus = request.POST.get('C_plus')
+                total_student_temp += int(post.C_plus)
                 print('C+ = ' + str(post.C_plus))
                 post.C = request.POST.get('C')
+                total_student_temp += int(post.C)
                 print('C = ' + str(post.C))
                 post.C_minus = request.POST.get('C_minus')
+                total_student_temp += int(post.C_minus)
                 print('C- = ' + str(post.C_minus))
 
                 post.D_plus = request.POST.get('D_plus')
+                total_student_temp += int(post.D_plus)
                 print('D+ = ' + str(post.D_plus))
                 post.D = request.POST.get('D')
+                total_student_temp += int(post.D)
                 print('D = ' + str(post.D))
                 post.D_minus = request.POST.get('D_minus')
+                total_student_temp += int(post.D_minus)
                 print('D- = ' + str(post.D_minus))
 
                 post.Fail = request.POST.get('Fail')
+                total_student_temp += int(post.Fail)
                 print('F = ' + str(post.Fail))
                 post.Withdraw = request.POST.get('Withdraw')
+                total_student_temp += int(post.Withdraw)
                 print('W = ' + str(post.Withdraw))
                 post.Incomplete = request.POST.get('Incomplete')
+                total_student_temp += int(post.Incomplete)
                 print('I- = ' + str(post.Incomplete))
 
+                post.total_student = total_student_temp
+                print('Total Student = ' + str(post.total_student))
                 post.save()
                 print('FINISHED SAVING GRADE DISTRIBUTION')
         except Exception as error:

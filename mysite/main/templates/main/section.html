@@ -102,6 +102,14 @@
     </div>
 
     <div class="form-group">
+        <label for="year">Year</label>
+        <input type="number" class="form-control" id="year" name="year"
+               aria-describedby="yearHelp" min="0"
+               placeholder="Example: 2019" required>
+        <small id="yearHelp" class="form-text text-muted">Enter a year for this section</small>
+    </div>
+
+    <div class="form-group">
         <label for="semester">Semester</label>
         <select id="semester" name="semester" class="form-control">
             <option value="SP">Spring</option>
@@ -117,7 +125,8 @@
         <input type="number" class="form-control" id="student_count" name="student_count"
                aria-describedby="studentCountHelp" min="0"
                placeholder="Example: 45" required>
-        <small id="studentCountHelp" class="form-text text-muted">Enter student amount</small>
+        <small id="studentCountHelp" class="form-text text-muted">Enter student amount, must match
+            total student for grade distribution if you selected one</small>
     </div>
 
     <div class="form-group">

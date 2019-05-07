@@ -64,7 +64,8 @@
         D-({{grade_distribution.D_minus}}),&nbsp;
         F({{grade_distribution.Fail}}),&nbsp;
         W({{grade_distribution.Withdraw}}),&nbsp;
-        I({{grade_distribution.Incomplete}})</a></li>
+        I({{grade_distribution.Incomplete}}),&nbsp;
+        total student({{grade_distribution.total_student}})</a></li>
     {% endfor %}
 </ul>
 {% else %}
@@ -101,7 +102,8 @@
                 D-({{grade_distribution.D_minus}}),&nbsp;
                 F({{grade_distribution.Fail}}),&nbsp;
                 W({{grade_distribution.Withdraw}}),&nbsp;
-                I({{grade_distribution.Incomplete}})
+                I({{grade_distribution.Incomplete}}),&nbsp;
+                total student({{grade_distribution.total_student}})
             </option>
             {% endfor %}
             {% else %}
