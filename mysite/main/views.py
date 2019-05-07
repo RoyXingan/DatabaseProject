@@ -13,28 +13,33 @@ def curriculum(request):
     curriculum_list = Curriculum.objects.order_by('curriculum_name')
 
     if request.method == 'POST':
-        if 'create_curriculum' in request.POST:
-            post = Curriculum()
-            post.curriculum_name = request.POST.get('curriculumName')
-            print('curriculum_name = ' + post.curriculum_name)
-            post.admin_name = request.POST.get('adminName')
-            print('admin_name = ' + post.admin_name)
-            post.admin_id = request.POST.get('adminID')
-            print('admin_id = ' + post.admin_id)
-            post.min_credits = request.POST.get('minCredit')
-            print('min_credits = ' + post.min_credits)
-            post.topic_coverage = request.POST.get('topicCoverage')
-            print('topic_coverage = ' + post.topic_coverage)
-            post.goal_valid_credits = request.POST.get('goalValidCredit')
-            print('goal_valid_credits = ' + post.goal_valid_credits)
-            if request.POST.get('goalValid') == 'on':
-                post.goal_valid = True
-                print('This curriculum is goal valid')
-            else:
-                post.goal_valid = False
-                print('This curriculum is NOT goal valid')
-            post.save()
-        # return HttpResponseRedirect('/')
+        try:
+            if 'create_curriculum' in request.POST:
+                post = Curriculum()
+                post.curriculum_name = request.POST.get('curriculumName')
+                print('curriculum_name = ' + post.curriculum_name)
+                post.admin_name = request.POST.get('adminName')
+                print('admin_name = ' + post.admin_name)
+                post.admin_id = request.POST.get('adminID')
+                print('admin_id = ' + post.admin_id)
+                post.min_credits = request.POST.get('minCredit')
+                print('min_credits = ' + post.min_credits)
+                post.topic_coverage = request.POST.get('topicCoverage')
+                print('topic_coverage = ' + post.topic_coverage)
+                post.goal_valid_credits = request.POST.get('goalValidCredit')
+                print('goal_valid_credits = ' + post.goal_valid_credits)
+                if request.POST.get('goalValid') == 'on':
+                    post.goal_valid = True
+                    print('This curriculum is goal valid')
+                else:
+                    post.goal_valid = False
+                    print('This curriculum is NOT goal valid')
+                post.save()
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/curriculum.html",
+                          context={"curriculum_list": curriculum_list,
+                                   "error": error})
 
     return render(request=request,
                   template_name="main/curriculum.html",
@@ -77,30 +82,37 @@ def topic(request):
     topic_list = Topic.objects.order_by('topic_id')
 
     if request.method == 'POST':
-        if 'create_topic' in request.POST:
-            post = Topic()
-            if not request.POST.get('editTopic') == 'addTopic':
-                topics = request.POST.get('editTopic').split(",")
-                post.topic_id = topics[0]
-                print('Topic ID = ' + post.topic_id)
-            hasCurr = False
-            for aCurriculum in curriculum_list:
-                if aCurriculum.curriculum_name == request.POST.get('curriculumName'):
-                    post.curriculum_name = aCurriculum
-                    hasCurr = True
-                    break
-            if not hasCurr:
-                return HttpResponseRedirect('/curriculum')
-            print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
-            post.topic_name = request.POST.get('topicName')
-            print('Topic Name = ' + post.topic_name)
-            post.level = request.POST.get('level')
-            print('Level = ' + post.level)
-            post.subject_area = request.POST.get('subjectArea')
-            print('Subject Area = ' + post.subject_area)
-            post.units = request.POST.get('units')
-            print('Units = ' + post.units)
-            post.save()
+        try:
+            if 'create_topic' in request.POST:
+                post = Topic()
+                if not request.POST.get('editTopic') == 'addTopic':
+                    topics = request.POST.get('editTopic').split(",")
+                    post.topic_id = topics[0]
+                    print('Topic ID = ' + post.topic_id)
+                hasCurr = False
+                for aCurriculum in curriculum_list:
+                    if aCurriculum.curriculum_name == request.POST.get('curriculumName'):
+                        post.curriculum_name = aCurriculum
+                        hasCurr = True
+                        break
+                if not hasCurr:
+                    return HttpResponseRedirect('/curriculum')
+                print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
+                post.topic_name = request.POST.get('topicName')
+                print('Topic Name = ' + post.topic_name)
+                post.level = request.POST.get('level')
+                print('Level = ' + post.level)
+                post.subject_area = request.POST.get('subjectArea')
+                print('Subject Area = ' + post.subject_area)
+                post.units = request.POST.get('units')
+                print('Units = ' + post.units)
+                post.save()
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/topic.html",
+                          context={"topic_list": topic_list,
+                                   "curriculum_list": curriculum_list,
+                                   "error": error})
 
     return render(request=request,
                   template_name="main/topic.html",
