@@ -501,3 +501,56 @@ def query_one(request):
                            "result_list": result_list,
                            "curriculum_list": curriculum_list,
                            "curriculum_course_list": curriculum_course_list})
+
+
+def query_two(request):
+    curriculum_list = Curriculum.objects.order_by('curriculum_name')
+    course_list = Course.objects.order_by('course_name')
+    topic_list = Topic.objects.order_by('topic_id')
+    result_list = Course.objects.none()
+    curriculum_course_list = CurriculumCourse.objects.order_by('id')
+
+    if request.method == 'POST':
+        try:
+            if 'create_query_two' in request.POST:
+                post = Course()
+                hasCour = False
+                # course_name = request.POST.get('course_name')
+                for aCourse in course_list:
+                    if aCourse.course_name == request.POST.get('course_name'):
+                        post.course_name = aCourse
+                        hasCour = True
+                        break
+                if not hasCour:
+                    print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                    # return HttpResponseRedirect('/course')
+
+                # print('Course Name = ' + post.course_name.course_name)
+                result_list = Course.objects.filter(course_name=str(post.course_name.course_name))
+
+                print('Query=>')
+                print(result_list.query)
+                print('---')
+                for rCour in result_list:
+                    print('course_name->' + rCour.course_name)
+                    print('subject_code->' + rCour.subject_code)
+                    print('course_number->' + str(rCour.course_number))
+                    print('credits->' + str(rCour.credits))
+                    print('description->' + rCour.description)
+
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/query_two.html",
+                          context={"topic_list": topic_list,
+                                   "course_list": course_list,
+                                   "curriculum_list": curriculum_list,
+                                   "curriculum_course_list": curriculum_course_list,
+                                   "result_list": result_list,
+                                   "error": error})
+    return render(request=request,
+                  template_name="main/query_two.html",
+                  context={"topic_list": topic_list,
+                           "course_list": course_list,
+                           "result_list": result_list,
+                           "curriculum_list": curriculum_list,
+                           "curriculum_course_list": curriculum_course_list})
