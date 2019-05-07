@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Query 3 Display{% endblock %}
+
+{% block content %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 20px;
+        }
+
+        /* Create three equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 33.33%;
+            padding: 15px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <label for="course_name">Display Information of a Course and Curriculum</label>
+    <div class="form-group">
+        <label for="course_name">Choose a Course</label>
+        <select id="course_name" name="course_name" class="form-control">
+            {% if course_list %}
+            {% for course in course_list %}
+            <option>{{ course.course_name }}</option>
+            {% endfor %}
+            {% else %}
+            <option>No courses are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="courseNameHelp" class="form-text text-muted">Choose a course name</small>
+    </div>
+    <div class="form-group">
+        <label for="curriculum_name">Choose a Curriculum</label>
+        <select id="curriculum_name" name="curriculum_name" class="form-control">
+            {% if curriculum_list %}
+            {% for curriculum in curriculum_list %}
+            <option>{{ curriculum.curriculum_name }}</option>
+            {% endfor %}
+            {% else %}
+            <option>No curriculum are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
+    </div>
+    <div class="form-group">
+        <label for="min_year">Lower Year Bound</label>
+        <input type="min_year" class="form-control" id="min_year" name="min_year"
+               aria-describedby="minYearHelp" min="0"
+               placeholder="Example: 2011" >
+        <small id="minYearHelp" class="form-text text-muted">Enter a year for the lower bound</small>
+        <br>
+        <label for="max_year">Upper Year Bound</label>
+        <input type="max_year" class="form-control" id="max_year" name="max_year"
+               aria-describedby="maxYearHelp" min="0"
+               placeholder="Example: 2019" >
+        <small id="maxYearHelp" class="form-text text-muted">Enter a year for the upper bound</small>
+    </div>
+    <div class="form-group">
+        <label for="min_semester">Lower Bound Semester</label>
+        <select id="min_semester" name="min_semester" class="form-control">
+            <option>---</option>
+            <option>FA</option>
+            <option>SP</option>
+            <option>S1</option>
+            <option>S2</option>
+        </select>
+        <small id="minSemesterHelp" class="form-text text-muted">Choose a semester for a lower bound</small>
+        <br>
+        <label for="max_semester">Upper Bound Semester</label>
+        <select id="max_semester" name="max_semester" class="form-control">
+            <option>---</option>
+            <option>FA</option>
+            <option>SP</option>
+            <option>S1</option>
+            <option>S2</option>
+        </select>
+        <small id="maxSemesterHelp" class="form-text text-muted">Choose a semester for a upper bound</small>
+    </div>
+    <button type="submit" class="btn btn-primary" name="create_query_three">Submit</button>
+</form>
+
+{% if result_list %}
+    <ul>
+    {% for goal in result_list %}
+        <a> Result: <br>
+            ------------ <br>
+            Curriculum Name = {{ goal.curriculum_name }} <br>
+            Course Name = {{ goal.course_name.course_name }} <br>
+            Goal ID = {{ goal.goal_id }} <br>
+            Description = {{ goal.description }} <br>
+            Grade Distribution ID = {{ goal.grade_distribution_id.grade_distribution_id }} <br>
+            Grade Distribution Info: <br>
+            <ul>
+            {% for grade_distribution in grade_distribution_list %}
+                {% if grade_distribution.grade_distribution_id == goal.grade_distribution_id.grade_distribution_id %}
+                    A+ = {{ grade_distribution.A_plus }} <br>
+                    A  = {{ grade_distribution.A }} <br>
+                    A- = {{ grade_distribution.A_minus }} <br>
+                    B+ = {{ grade_distribution.B_plus }} <br>
+                    B  = {{ grade_distribution.B }} <br>
+                    B- = {{ grade_distribution.B_minus }} <br>
+                    C+ = {{ grade_distribution.C_plus }} <br>
+                    C  = {{ grade_distribution.C }} <br>
+                    C- = {{ grade_distribution.C_minus }} <br>
+                    D+ = {{ grade_distribution.D_plus }} <br>
+                    D  = {{ grade_distribution.D }} <br>
+                    D- = {{ grade_distribution.D_minus }} <br>
+                    F  = {{ grade_distribution.Fail }} <br>
+                    W  = {{ grade_distribution.Withdraw }} <br>
+                    I  = {{ grade_distribution.Incomplete }} <br>
+                {% endif %}
+            {% endfor %}
+            </ul>
+            ------------ <br>
+        </a>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No query matches found.</p>
+{% endif %}
+
+</body>
+</head>
+{% endblock %}

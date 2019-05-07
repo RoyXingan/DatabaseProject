@@ -30,4 +30,5 @@ urlpatterns = [
     path("grade_distribution", views.grade_distribution, name="grade_distribution"),
     path("query_one", views.query_one, name="query_one"),
     path("query_two", views.query_two, name="query_two"),
+    path("query_three", views.query_three, name="query_three"),
 ]

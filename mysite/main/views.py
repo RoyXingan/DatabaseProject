@@ -554,3 +554,74 @@ def query_two(request):
                            "result_list": result_list,
                            "curriculum_list": curriculum_list,
                            "curriculum_course_list": curriculum_course_list})
+
+
+def query_three(request):
+    curriculum_list = Curriculum.objects.order_by('curriculum_name')
+    course_list = Course.objects.order_by('course_name')
+    topic_list = Topic.objects.order_by('topic_id')
+    result_list = Goal.objects.none()
+    curriculum_course_list = CurriculumCourse.objects.order_by('id')
+    section_list = Section.objects.order_by('section_id')
+    goal_list = Goal.objects.order_by('goal_id')
+    grade_distribution_list = GradeDistribution.objects.order_by('grade_distribution_id')
+
+    if request.method == 'POST':
+        try:
+            if 'create_query_three' in request.POST:
+                post = Goal()
+                hasCour = False
+                # course_name = request.POST.get('course_name')
+                for aCourse in course_list:
+                    if aCourse.course_name == request.POST.get('course_name'):
+                        post.course_name = aCourse
+                        hasCour = True
+                        break
+                if not hasCour:
+                    print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
+                    # return HttpResponseRedirect('/course')
+
+                print('Course Name = ' + post.course_name.course_name)
+                hasCurr = False
+                for aCurriculum in curriculum_list:
+                    if aCurriculum.curriculum_name == request.POST.get('curriculum_name'):
+                        post.curriculum_name = aCurriculum
+                        hasCurr = True
+                        break
+                if not hasCurr:
+                    print('Error: Error finding Curriculum reference!')
+                print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
+                result_list = Goal.objects.filter(course_name=str(post.course_name.course_name), curriculum_name=str(post.curriculum_name.curriculum_name))
+
+                # print('Query=>')
+                # print(result_list.query)
+                print('---')
+                for rGoal in result_list:
+                    print('curriculum_name->' + rGoal.curriculum_name.curriculum_name)
+                    print('course_name->' + rGoal.course_name.course_name)
+                    print('goal_id->' + str(rGoal.goal_id))
+                    print('description->' + rGoal.description)
+                    print('grade_distribution_id->' + str(rGoal.grade_distribution_id.grade_distribution_id))
+
+        except Exception as error:
+            return render(request=request,
+                          template_name="main/query_three.html",
+                          context={"topic_list": topic_list,
+                                   "course_list": course_list,
+                                   "curriculum_list": curriculum_list,
+                                   "curriculum_course_list": curriculum_course_list,
+                                   "result_list": result_list,
+                                   "section_list": section_list,
+                                   "goal_list": goal_list,
+                                   "grade_distribution_list": grade_distribution_list,
+                                   "error": error})
+    return render(request=request,
+                  template_name="main/query_three.html",
+                  context={"topic_list": topic_list,
+                           "course_list": course_list,
+                           "result_list": result_list,
+                           "curriculum_list": curriculum_list,
+                           "section_list": section_list,
+                           "goal_list": goal_list,
+                           "curriculum_course_list": curriculum_course_list,
+                           "grade_distribution_list": grade_distribution_list})

@@ -46,8 +46,8 @@
 <body>
 <form method="post">
     {% csrf_token %}
+    <label for="curriculum_name">Display Information of a chosen Course</label>
     <div class="form-group">
-        <label for="course_name">Display information of a chosen course</label>
         <select id="course_name" name="course_name" class="form-control">
             {% if course_list %}
             {% for course in course_list %}
