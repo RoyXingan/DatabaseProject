@@ -84,11 +84,11 @@
         <label for="topicSetID">Topic Set ID</label>
         <input type="number" class="form-control" id="topicSetID" name="topicSetID" aria-describedby="topicSetIDHelp"
                placeholder="Example: 0" required>
-        <small id="topicSetIDHelp" class="form-text text-muted">Enter a topic set ID</small>
+        <small id="topicSetIDHelp" class="form-text text-muted">Enter a topic set ID from topic set page</small>
     </div>
 
     <div class="form-group">
-        <label for="topicSetCourse">Choose a course</label>
+        <label for="topicSetCourse">Choose a Course</label>
         <select id="topicSetCourse" name="topicSetCourse" class="form-control">
             {% if course_list %}
             {% for course in course_list %}
@@ -102,7 +102,7 @@
     </div>
 
     <div class="form-group">
-        <label for="topicSetTopic">Choose a topic</label>
+        <label for="topicSetTopic">Choose a Topic</label>
         <select id="topicSetTopic" name="topicSetTopic" class="form-control">
             {% if topic_list %}
             {% for topic in topic_list %}

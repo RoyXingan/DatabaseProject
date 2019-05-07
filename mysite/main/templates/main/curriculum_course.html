@@ -67,7 +67,7 @@
     <div class="form-group">
         <label for="editCurriculumCourse">Option</label>
         <select id="editCurriculumCourse" name="editCurriculumCourse" class="form-control">
-            <option value="addCurriculumCourse" selected>Add A Curriculum Course</option>
+            <option value="addCurriculumCourse" selected>Add a Curriculum Course</option>
             {% if curriculum_course_list %}
             {% for curriculum_course in curriculum_course_list %}
             <option>{{curriculum_course.id}},&nbsp;{{curriculum_course.curriculum_name}},&nbsp;{{curriculum_course.course_name}}</option>
@@ -76,7 +76,7 @@
             <option>No course in any curriculum, create one first.</option>
             {% endif %}
         </select>
-        <small id="editTopicSetHelp" class="form-text text-muted">Select one if you want to edit a curriculum course</small>
+        <small id="editCurriculumCourseHelp" class="form-text text-muted">Select one if you want to edit a curriculum course</small>
     </div>
 
     <div class="form-group">
@@ -90,11 +90,11 @@
             <option>No curriculum are available, create one first.</option>
             {% endif %}
         </select>
-        <small id="topicCurriculumHelp" class="form-text text-muted">Choose a curriculum name</small>
+        <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
     </div>
 
     <div class="form-group">
-        <label for="course_name">Choose a course</label>
+        <label for="course_name">Choose a Course</label>
         <select id="course_name" name="course_name" class="form-control">
             {% if course_list %}
             {% for course in course_list %}
@@ -104,7 +104,7 @@
             <option>No course are available, create one first.</option>
             {% endif %}
         </select>
-        <small id="courseNameHelp" class="form-text text-muted">Select a course for this topic set</small>
+        <small id="courseNameHelp" class="form-text text-muted">Select a course for this curriculum</small>
     </div>
 
     <div class="form-group form-check">
@@ -123,7 +123,7 @@
     <div class="form-group">
         <label for="units_of_topic">Units of Topic</label>
         <input type="number" class="form-control" id="units_of_topic" name="units_of_topic" aria-describedby="unitsOfTopicHelp"
-               placeholder="Example: 123">
+               placeholder="Example: 12">
         <small id="unitsOfTopicHelp" class="form-text text-muted">Enter units of topic for the course</small>
     </div>
 

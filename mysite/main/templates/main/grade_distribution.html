@@ -48,7 +48,23 @@
 {% if grade_distribution_list %}
 <ul>
     {% for grade_distribution in grade_distribution_list %}
-    <li><a href="#">{{grade_distribution.grade_distribution_id}}</a></li>
+    <li><a href="#">Grade Distribution
+        {{grade_distribution.grade_distribution_id}}:&nbsp;
+        A+({{grade_distribution.A_plus}}),&nbsp;
+        A({{grade_distribution.A}}),&nbsp;
+        A({{grade_distribution.A_minus}}),&nbsp;
+        B+({{grade_distribution.B_plus}}),&nbsp;
+        B({{grade_distribution.B}}),&nbsp;
+        B-({{grade_distribution.B_minus}}),&nbsp;
+        C+({{grade_distribution.C_plus}}),&nbsp;
+        C({{grade_distribution.C}}),&nbsp;
+        C-({{grade_distribution.C_minus}}),&nbsp;
+        D+({{grade_distribution.D_plus}}),&nbsp;
+        D({{grade_distribution.D}}),&nbsp;
+        D-({{grade_distribution.D_minus}}),&nbsp;
+        F({{grade_distribution.Fail}}),&nbsp;
+        W({{grade_distribution.Withdraw}}),&nbsp;
+        I({{grade_distribution.Incomplete}})</a></li>
     {% endfor %}
 </ul>
 {% else %}
@@ -65,11 +81,34 @@
 <form method="post">
     {% csrf_token %}
     <div class="form-group">
-        <label for="grade_distribution_id">Grade Distribution ID</label>
-        <input type="number" class="form-control" id="grade_distribution_id" name="grade_distribution_id"
-               aria-describedby="gradeDistributionIDHelp" min="0"
-               placeholder="Enter an ID" required>
-        <small id="gradeDistributionIDHelp" class="form-text text-muted">Enter grade distribution id or enter exist for edit</small>
+        <label for="editGradeDistribution">Option</label>
+        <select id="editGradeDistribution" name="editGradeDistribution" class="form-control">
+            <option value="addGradeDistribution" selected>Add a Grade Distribution</option>
+            {% if grade_distribution_list %}
+            {% for grade_distribution in grade_distribution_list %}
+            <option>{{grade_distribution.grade_distribution_id}}:&nbsp;
+                A+({{grade_distribution.A_plus}}),&nbsp;
+                A({{grade_distribution.A}}),&nbsp;
+                A({{grade_distribution.A_minus}}),&nbsp;
+                B+({{grade_distribution.B_plus}}),&nbsp;
+                B({{grade_distribution.B}}),&nbsp;
+                B-({{grade_distribution.B_minus}}),&nbsp;
+                C+({{grade_distribution.C_plus}}),&nbsp;
+                C({{grade_distribution.C}}),&nbsp;
+                C-({{grade_distribution.C_minus}}),&nbsp;
+                D+({{grade_distribution.D_plus}}),&nbsp;
+                D({{grade_distribution.D}}),&nbsp;
+                D-({{grade_distribution.D_minus}}),&nbsp;
+                F({{grade_distribution.Fail}}),&nbsp;
+                W({{grade_distribution.Withdraw}}),&nbsp;
+                I({{grade_distribution.Incomplete}})
+            </option>
+            {% endfor %}
+            {% else %}
+            <option>No grade distribution are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="gradeDistHelp" class="form-text text-muted">Select one if you want to edit a grade distribution</small>
     </div>
 
     <div class="form-group">

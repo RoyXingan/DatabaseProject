@@ -367,24 +367,20 @@ def goal(request):
 
 
 def grade_distribution(request):
-    course_list = Course.objects.order_by('course_name')
-    section_list = Section.objects.order_by('section_id')
     grade_distribution_list = GradeDistribution.objects.order_by('grade_distribution_id')
 
     if request.method == 'POST':
         try:
             if 'create_grade_distribution' in request.POST:
                 post = GradeDistribution()
-                sameIDFound = False
-                for aGD in grade_distribution_list:
-                    if str(aGD.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
-                        post.grade_distribution_id = aGD
-                        sameIDFound = True
-                        break
-                if not sameIDFound:
-                    print('Error: No Grade Distribution ID match found!')
+                if not request.POST.get('editGradeDistribution') == 'addGradeDistribution':
+                    print("Editing...")
+                    gd = request.POST.get('editGradeDistribution').split(":")
+                    post.grade_distribution_id = int(gd[0])
+                    print('Grade Distribution ID = ' + str(post.grade_distribution_id))
+                else:
+                    print("Creating new grade distribution...")
 
-                print('Grade Distribution ID = ' + str(post.grade_distribution_id))
                 post.A_plus = request.POST.get('A_plus')
                 print('A+ = ' + str(post.A_plus))
                 post.A = request.POST.get('A')
@@ -424,17 +420,14 @@ def grade_distribution(request):
                 print('FINISHED SAVING GRADE DISTRIBUTION')
         except Exception as error:
             return render(request=request,
-                          template_name="main/section.html",
-                          context={"course_list": course_list,
-                                   "section_list": section_list,
+                          template_name="main/grade_distribution.html",
+                          context={"grade_distribution_list": grade_distribution_list,
                                    "error": error})
             # return HttpResponseRedirect('/')
 
     return render(request=request,
                   template_name="main/grade_distribution.html",
-                  context={"course_list": course_list,
-                           "section_list": section_list,
-                           "grade_distribution_list": grade_distribution_list})
+                  context={"grade_distribution_list": grade_distribution_list})
 
 
 def query_one(request):

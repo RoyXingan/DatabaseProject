@@ -76,7 +76,7 @@
             <option>No section are available, create one first.</option>
             {% endif %}
         </select>
-        <small id="editGoalHelp" class="form-text text-muted">Select one if you want to edit a section</small>
+        <small id="editSectionHelp" class="form-text text-muted">Select one if you want to edit a section</small>
     </div>
 
     <div class="form-group">
@@ -133,7 +133,7 @@
     </div>
 
     <div class="form-group">
-        <label for="grade_distribution_id">Grade Distribution ID</label>
+        <label for="grade_distribution_id">Grade Distribution</label>
         <select id="grade_distribution_id" name="grade_distribution_id" class="form-control">
             <option value="null" selected> Not Graded </option>
             {% if grade_distribution_list %}
