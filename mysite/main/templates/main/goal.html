@@ -48,7 +48,7 @@
 {% if goal_list %}
     <ul>
     {% for goal in goal_list %}
-        <li><a href="#">{{goal.goal_id}},&nbsp;{{goal.curriculum_name}},&nbsp;{{goal.course_name}}</a></li>
+        <li><a href="#">Goal [ID, curriculum, course]: {{goal.goal_id}},&nbsp;{{goal.curriculum_name}},&nbsp;{{goal.course_name}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -90,7 +90,7 @@
             <option>No curriculum are available, create one first.</option>
             {% endif %}
         </select>
-        <small id="topicCurriculumHelp" class="form-text text-muted">Choose a curriculum name for this goal</small>
+        <small id="topicCurriculumHelp" class="form-text text-muted">Select a curriculum for this goal</small>
     </div>
 
     <div class="form-group">
@@ -109,17 +109,24 @@
 
     <div class="form-group">
         <label for="description">Goal Description</label>
-        <input type="text" class="form-control" id="description" name="description"
+        <input type="text" maxlength="255" class="form-control" id="description" name="description"
                aria-describedby="descriptionHelp"
                placeholder="Example: This goal is very cool" required>
         <small id="descriptionHelp" class="form-text text-muted">Enter goal description</small>
     </div>
 
     <div class="form-group">
-        <label for="grade_distribution_id">Grade Distribution</label>
-        <input type="number" class="form-control" id="grade_distribution_id" name="grade_distribution_id" aria-describedby="gradeDistributionHelp"
-               placeholder="Example: 123">
-        <small id="gradeDistributionHelp" class="form-text text-muted">Enter grade distribution for this goal</small>
+        <label for="grade_distribution_id">Grade Distribution ID</label>
+        <select id="grade_distribution_id" name="grade_distribution_id" class="form-control">
+            {% if grade_distribution_list %}
+            {% for grade_distribution in grade_distribution_list %}
+            <option>{{grade_distribution.grade_distribution_id}}</option>
+            {% endfor %}
+            {% else %}
+            <option>No grade distribution are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="gradeDistributionIDHelp" class="form-text text-muted">Select a grade distribution ID from grade distribution page</small>
     </div>
 
     <button type="submit" class="btn btn-primary" name="create_goal">Submit</button>

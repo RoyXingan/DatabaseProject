@@ -304,6 +304,7 @@ def goal(request):
                     print('Curriculum Course ID = ' + post.goal_id)
                 else:
                     print("Creating new goal...")
+
                 hasCurr = False
                 for aCurriculum in curriculum_list:
                     if aCurriculum.curriculum_name == request.POST.get('curriculum_name'):
@@ -325,18 +326,19 @@ def goal(request):
                 if not hasCour:
                     print("Error: No course name matching '" + request.POST.get('course_name') + "' found!")
                     return HttpResponseRedirect('/course')
-
                 print('Course Name = ' + post.course_name.course_name)
+
                 post.description = request.POST.get('description')
                 print('Description = ' + post.description)
-                sameIDFound = False
-                for post in grade_distribution_list:
-                    if str(post.grade_distribution_id) == str(request.POST.get('grade_distribution_id')):
-                        post.grade_distribution_id = post
-                        sameIDFound = True
+
+                grade_dist_found = False
+                for grade_dist in grade_distribution_list:
+                    if grade_dist.grade_distribution_id == int(request.POST.get('grade_distribution_id')):
+                        post.grade_distribution_id = grade_dist
+                        grade_dist_found = True
                         break
-                if not sameIDFound:
-                    print('Error: No Grade Distribution ID match found!')
+                if not grade_dist_found:
+                    return HttpResponseRedirect('/grade_distribution')
                 print('Grade Distribution ID = ' + str(post.grade_distribution_id.grade_distribution_id))
                 post.save()
             # return HttpResponseRedirect('/')
@@ -346,12 +348,14 @@ def goal(request):
                           context={"course_list": course_list,
                                    "curriculum_list": curriculum_list,
                                    "goal_list": goal_list,
+                                   "grade_distribution_list": grade_distribution_list,
                                    "error": error})
 
     return render(request=request,
                   template_name="main/goal.html",
                   context={"course_list": course_list,
                            "curriculum_list": curriculum_list,
+                           "grade_distribution_list": grade_distribution_list,
                            "goal_list": goal_list})
 
 
