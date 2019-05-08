@@ -73,77 +73,64 @@
         </select>
         <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
     </div>
-    <div class="form-group">
-        <label for="year">Year</label>
-        <select id="year" name="year" class="form-control">
-            {% if section_list %}
-            {% for section in section_list %}
-            <option>{{ section.year }}</option>
-            {% endfor %}
-            {% else %}
-            <option>No section years are available, create one first.</option>
-            {% endif %}
-        </select>
-        <small id="sectionYearHelp" class="form-text text-muted">Choose a year to narrow down the search</small>
-    </div>
 
-    <div class="form-group form-check">
-        <input class="form-check-input" type="checkbox" id="fall_semester" name="fall_semester">
-        <label class="form-check-label" for="fall_semester">~ Fall Semester</label>
+    <div class="form-group">
+        <div class="row">
+            <div class="col">
+                <label for="start_year">From Year</label>
+                <input type="number" class="form-control" id="start_year" name="start_year"
+                       aria-describedby="start_yearHelp" min="0"
+                       placeholder=2000>
+                <small id="start_yearHelp" class="form-text text-muted">Leave empty if no lower bond</small>
+            </div>
+            <div class="col">
+                <label for="end_year">To Year</label>
+                <input type="number" class="form-control" id="end_year" name="end_year"
+                       aria-describedby="end_yearHelp" min="0"
+                       placeholder=2020>
+                <small id="end_yearHelp" class="form-text text-muted">Leave empty if no upper bond</small>
+            </div>
+        </div>
     </div>
-    <div class="form-group form-check">
-        <input class="form-check-input" type="checkbox" id="winter_semester" name="winter_semester">
-        <label class="form-check-label" for="winter_semester">~ Winter Semester</label>
-    </div>
-    <div class="form-group form-check">
-        <input class="form-check-input" type="checkbox" id="spring_semester" name="spring_semester">
-        <label class="form-check-label" for="spring_semester">~ Spring Semester</label>
-    </div>
-    <div class="form-group form-check">
-        <input class="form-check-input" type="checkbox" id="summer_semester" name="summer_semester">
-        <label class="form-check-label" for="summer_semester">~ Summer Semester</label>
+    <div class="form-group">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="spring_semester" name="spring_semester">
+            <label class="form-check-label" for="spring_semester">~ Spring Semester</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="summer_semester" name="summer_semester">
+            <label class="form-check-label" for="summer_semester">~ Summer Semester</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="fall_semester" name="fall_semester">
+            <label class="form-check-label" for="fall_semester">~ Fall Semester</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="winter_semester" name="winter_semester">
+            <label class="form-check-label" for="winter_semester">~ Winter Semester</label>
+        </div>
     </div>
     <button type="submit" class="btn btn-primary" name="create_query_three">Submit</button>
 </form>
 
 {% if result_list %}
-    <ul>
-    {% for goal in result_list %}
-        <a> Result: <br>
-            ------------ <br>
-            Curriculum Name = {{ goal.curriculum_name }} <br>
-            Course Name = {{ goal.course_name.course_name }} <br>
-            Goal ID = {{ goal.goal_id }} <br>
-            Description = {{ goal.description }} <br>
-            Grade Distribution ID = {{ goal.grade_distribution_id.grade_distribution_id }} <br>
-            Grade Distribution Info: <br>
-            <ul>
-            {% for grade_distribution in grade_distribution_list %}
-                {% if grade_distribution.grade_distribution_id == goal.grade_distribution_id.grade_distribution_id %}
-                    A+ = {{ grade_distribution.A_plus }} <br>
-                    A  = {{ grade_distribution.A }} <br>
-                    A- = {{ grade_distribution.A_minus }} <br>
-                    B+ = {{ grade_distribution.B_plus }} <br>
-                    B  = {{ grade_distribution.B }} <br>
-                    B- = {{ grade_distribution.B_minus }} <br>
-                    C+ = {{ grade_distribution.C_plus }} <br>
-                    C  = {{ grade_distribution.C }} <br>
-                    C- = {{ grade_distribution.C_minus }} <br>
-                    D+ = {{ grade_distribution.D_plus }} <br>
-                    D  = {{ grade_distribution.D }} <br>
-                    D- = {{ grade_distribution.D_minus }} <br>
-                    F  = {{ grade_distribution.Fail }} <br>
-                    W  = {{ grade_distribution.Withdraw }} <br>
-                    I  = {{ grade_distribution.Incomplete }} <br>
-                {% endif %}
-            {% endfor %}
-            </ul>
-            ------------ <br>
-        </a>
+<ul>
+    {% for result in result_list %}
+    <a> Result: <br>
+        ------------ <br>
+        Course = {{ result.course_name.course_name }},&nbsp;Section&nbsp;{{ result.section_id }}<br>
+        Year = {{ result.year }} <br>
+        Semester = {{ result.semester }} <br>
+        Student Count = {{ result.student_count }} <br>
+        Comment 1 = {{ result.comment1 }} <br>
+        Comment 2 = {{ result.comment2 }} <br>
+        Grade Distribution Info: {{ result.grade_distribution_id }}<br>
+        ------------ <br><br>
+    </a>
     {% endfor %}
-    </ul>
+</ul>
 {% else %}
-    <p>No query matches found.</p>
+<p>No query matches found.</p>
 {% endif %}
 
 </body>
