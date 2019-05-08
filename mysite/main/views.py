@@ -591,34 +591,34 @@ def query_three(request):
                 print('input_start_year = ' + input_start_year)
                 print('input_end_year = ' + input_end_year)
 
-                curr_course = CurriculumCourse.objects.get(
+                curr_course_count = CurriculumCourse.objects.filter(
                     curriculum_name=input_curriculum_name,
-                    course_name=input_course_name)
-                tempCourse = str(curr_course.course_name).split(' ')
-                print(tempCourse[1])
+                    course_name=input_course_name).count()
+                if int(curr_course_count) == 0:
+                    raise ValueError
 
                 if input_start_year == '' and input_end_year != '':
                     print('have end year')
                     sections = Section.objects.filter(
-                        course_name=tempCourse[1],
+                        course_name=input_course_name,
                         year__lte=int(input_end_year)
                     )
                 elif input_start_year != '' and input_end_year == '':
                     print('have start year')
                     sections = Section.objects.filter(
-                        course_name=tempCourse[1],
+                        course_name=input_course_name,
                         year__gte=int(input_start_year)
                     )
                 elif input_start_year != '' and input_end_year != '':
                     print('have both year')
                     sections = Section.objects.filter(
-                        course_name=tempCourse[1],
+                        course_name=input_course_name,
                         year__range=(int(input_start_year), int(input_end_year))
                     )
                 else:
                     print('have no year limit')
                     sections = Section.objects.filter(
-                        course_name=tempCourse[1]
+                        course_name=input_course_name
                     )
                 print(sections)
 

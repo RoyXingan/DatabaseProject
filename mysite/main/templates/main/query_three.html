@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Query 3 Display{% endblock %}
+{% block title %}Section Info{% endblock %}
 
 {% block content %}
 <head>
@@ -44,6 +44,14 @@
         }
     </style>
 <body>
+
+{% if error %}
+<div class="alert alert-danger fade in">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Failed -</strong> Error: Please check inputs!
+</div>
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
     <label for="course_name">Display Information of a Course and Curriculum</label>
