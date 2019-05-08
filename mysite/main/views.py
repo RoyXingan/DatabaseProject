@@ -587,6 +587,15 @@ def query_three(request):
                 print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
                 result_list = Goal.objects.filter(course_name=str(post.course_name.course_name), curriculum_name=str(post.curriculum_name.curriculum_name))
 
+                if request.POST.get('fall_semester') == 'on':
+                    result_list = result_list.filter(semester=str('FA'))
+
+                if request.POST.get('spring_semester') == 'on':
+                    result_list = result_list.filter(semester=str('SP'))
+
+                if request.POST.get('summer_semester') == 'on':
+                    result_list = result_list.filter(semester=str('SM'))
+
                 # print('Query=>')
                 # print(result_list.query)
                 print('---')

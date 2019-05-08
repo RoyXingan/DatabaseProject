@@ -74,38 +74,28 @@
         <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
     </div>
     <div class="form-group">
-        <label for="min_year">Lower Year Bound</label>
-        <input type="min_year" class="form-control" id="min_year" name="min_year"
-               aria-describedby="minYearHelp" min="0"
-               placeholder="Example: 2011" >
-        <small id="minYearHelp" class="form-text text-muted">Enter a year for the lower bound</small>
-        <br>
-        <label for="max_year">Upper Year Bound</label>
-        <input type="max_year" class="form-control" id="max_year" name="max_year"
-               aria-describedby="maxYearHelp" min="0"
-               placeholder="Example: 2019" >
-        <small id="maxYearHelp" class="form-text text-muted">Enter a year for the upper bound</small>
+        <label for="year">Choose a Year</label>
+        <select id="year" name="year" class="form-control">
+            {% if section_list %}
+            {% for section in section_list %}
+            <option>{{ section.section_id }}</option>
+            {% endfor %}
+            {% else %}
+            <option>No section years are available, create one first.</option>
+            {% endif %}
+        </select>
+        <small id="sectionYearHelp" class="form-text text-muted">Choose a year to narrow down the search</small>
     </div>
+{#    <div class="form-group form-check">#}
+{#        <input class="form-check-input" type="checkbox" id="goalValid" name="fall_semester">#}
+{#        <label class="form-check-label" for="fall_semester">~ Fall Semester</label>#}
+{#    </div>#}
     <div class="form-group">
-        <label for="min_semester">Lower Bound Semester</label>
-        <select id="min_semester" name="min_semester" class="form-control">
-            <option>---</option>
-            <option>FA</option>
-            <option>SP</option>
-            <option>S1</option>
-            <option>S2</option>
-        </select>
-        <small id="minSemesterHelp" class="form-text text-muted">Choose a semester for a lower bound</small>
-        <br>
-        <label for="max_semester">Upper Bound Semester</label>
-        <select id="max_semester" name="max_semester" class="form-control">
-            <option>---</option>
-            <option>FA</option>
-            <option>SP</option>
-            <option>S1</option>
-            <option>S2</option>
-        </select>
-        <small id="maxSemesterHelp" class="form-text text-muted">Choose a semester for a upper bound</small>
+        <label for="semesters">Semesters</label><br>
+        <input type="checkbox" name="fall_semester" value="fall_semester" fAChecked="checked">  Fall Semester<br>
+        <input type="checkbox" name="spring_semester" value="spring_semester" sPChecked="checked">  Spring Semester<br>
+        <input type="checkbox" name="summer_semester" value="summer_semester" sMChecked="checked">  Summer Semester<br>
+        <input type="checkbox" name="winter_semester" value="spring_semester" wIhecked="checked">  Winter Semester<br>
     </div>
     <button type="submit" class="btn btn-primary" name="create_query_three">Submit</button>
 </form>
