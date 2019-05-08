@@ -74,11 +74,11 @@
         <small id="curriculumNameHelp" class="form-text text-muted">Choose a curriculum name</small>
     </div>
     <div class="form-group">
-        <label for="year">Choose a Year</label>
+        <label for="year">Year</label>
         <select id="year" name="year" class="form-control">
             {% if section_list %}
             {% for section in section_list %}
-            <option>{{ section.section_id }}</option>
+            <option>{{ section.year }}</option>
             {% endfor %}
             {% else %}
             <option>No section years are available, create one first.</option>
@@ -86,16 +86,22 @@
         </select>
         <small id="sectionYearHelp" class="form-text text-muted">Choose a year to narrow down the search</small>
     </div>
-{#    <div class="form-group form-check">#}
-{#        <input class="form-check-input" type="checkbox" id="goalValid" name="fall_semester">#}
-{#        <label class="form-check-label" for="fall_semester">~ Fall Semester</label>#}
-{#    </div>#}
-    <div class="form-group">
-        <label for="semesters">Semesters</label><br>
-        <input type="checkbox" name="fall_semester" value="fall_semester" fAChecked="checked">  Fall Semester<br>
-        <input type="checkbox" name="spring_semester" value="spring_semester" sPChecked="checked">  Spring Semester<br>
-        <input type="checkbox" name="summer_semester" value="summer_semester" sMChecked="checked">  Summer Semester<br>
-        <input type="checkbox" name="winter_semester" value="spring_semester" wIhecked="checked">  Winter Semester<br>
+
+    <div class="form-group form-check">
+        <input class="form-check-input" type="checkbox" id="fall_semester" name="fall_semester">
+        <label class="form-check-label" for="fall_semester">~ Fall Semester</label>
+    </div>
+    <div class="form-group form-check">
+        <input class="form-check-input" type="checkbox" id="winter_semester" name="winter_semester">
+        <label class="form-check-label" for="winter_semester">~ Winter Semester</label>
+    </div>
+    <div class="form-group form-check">
+        <input class="form-check-input" type="checkbox" id="spring_semester" name="spring_semester">
+        <label class="form-check-label" for="spring_semester">~ Spring Semester</label>
+    </div>
+    <div class="form-group form-check">
+        <input class="form-check-input" type="checkbox" id="summer_semester" name="summer_semester">
+        <label class="form-check-label" for="summer_semester">~ Summer Semester</label>
     </div>
     <button type="submit" class="btn btn-primary" name="create_query_three">Submit</button>
 </form>

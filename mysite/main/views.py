@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse, Section, GradeDistribution, Goal
+from django.db.models import Count
 
 
 # Create your views here.
@@ -607,16 +608,38 @@ def query_three(request):
                 if not hasCurr:
                     print('Error: Error finding Curriculum reference!')
                 print('Curriculum Name = ' + post.curriculum_name.curriculum_name)
-                result_list = Goal.objects.filter(course_name=str(post.course_name.course_name), curriculum_name=str(post.curriculum_name.curriculum_name))
+                result_list = Goal.objects.filter(course_name=str(post.course_name.course_name),
+                                                  curriculum_name=str(post.curriculum_name.curriculum_name))
+                # # get rid of duplicate years
+                # result_list.annotate(year_count=Count('year')).exclude(year_count=1)
+
+                hasYear = False
+                tYear = 0
+                for section in section_list:
+                    if str(section.year) == request.POST.get('year'):
+                        tYear = section.year
+                        # result_list = result_list.filter(semester=tYear)
+                        hasYear = True
+                        break
+                if not hasYear:
+                    print('Error: Error finding Section reference!')
+                print('Year = ' + str(tYear))
 
                 if request.POST.get('fall_semester') == 'on':
-                    result_list = result_list.filter(semester=str('FA'))
+                    # result_list = result_list.filter(semester='FA')
+                    print('FILTERED FALL')
 
                 if request.POST.get('spring_semester') == 'on':
-                    result_list = result_list.filter(semester=str('SP'))
+                    # result_list = result_list.filter(semester=str('SP'))
+                    print('FILTERED SPRING')
 
                 if request.POST.get('summer_semester') == 'on':
-                    result_list = result_list.filter(semester=str('SM'))
+                    # result_list = result_list.filter(semester=str('SM'))
+                    print('FILTERED SUMMER')
+
+                if request.POST.get('winter_semester') == 'on':
+                    # result_list = result_list.filter(semester=str('WT'))
+                    print('FILTERED WINTER')
 
                 # print('Query=>')
                 # print(result_list.query)
