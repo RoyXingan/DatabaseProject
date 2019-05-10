@@ -1,7 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from .models import Curriculum, Course, Topic, TopicSet, CurriculumCourse, Section, GradeDistribution, Goal
-from django.db.models import Count
 
 
 # Create your views here.
